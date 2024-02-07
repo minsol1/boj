@@ -1,7 +1,6 @@
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
@@ -23,7 +22,6 @@ class Node implements Comparable<Node>{
 	}
 }
 
-// 최소비용 구하기
 public class Main {
 	static int[] dist;
 	static ArrayList[] li;
@@ -95,5 +93,4 @@ public class Main {
 		System.out.println(di(S));
 		
 	}
-
 }
