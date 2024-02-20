@@ -1,92 +1,105 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-
-	static int [][]board;
-	static int ret= Integer.MAX_VALUE;
-	static int N, M;
-	static List<Pos> chicken = new ArrayList<>();
-	static List<Pos> home = new ArrayList<>();
-	public static void main(String[] args) throws IOException{
-		// TODO Auto-generated method stub
-		input();
-		solution();
-		System.out.println(ret);
+	static int N,M;
+	static int[][] arr;
+	static int[][] visited;
+	static int[] dx = {1,0,-1,0};
+	static int[] dy = {0,1,0,-1};
+	static Deque<int[]> q; 
+	static ArrayList<int[]> pos;
+	static ArrayList<int[]> clist;
+	static int res;
+	
+	static int bfs() {
+		int c = 0;
+		while(!q.isEmpty()) {
+			int[] now = q.poll();
+			for(int d=0;d<4;d++) {
+				int nx = now[0] + dx[d];
+				int ny = now[1] + dy[d];
+				if(nx<0 || nx>=N || ny<0 || ny>=N) {
+					continue;
+				}
+				if(visited[nx][ny]==-1) {
+					visited[nx][ny] = visited[now[0]][now[1]]+1;
+					q.add(new int[] {nx,ny});
+					
+					if(arr[nx][ny]==1) {
+						c+= visited[nx][ny];
+					}
+				}
+			}
+		}
+		
+		return c;
 	}
 	
-	static void input() throws IOException{
+	static void bt(int idx, int cnt) {
+		if(cnt == M) { // 치킨집 m개 조합 찾으면 bfs 
+			
+			for(int i=0;i<N;i++) {
+				Arrays.fill(visited[i], -1);
+			}
+			
+			for(int i = 0;i<M ;i++) {
+				q.add(clist.get(i));
+				visited[clist.get(i)[0]][clist.get(i)[1]]++;
+			}
+			
+			res = Math.min(res, bfs() ); // 거리합이 최소보다 작으면 리셋
+			return;
+		}
+		
+		for(int i= idx ; i<pos.size();i++) {
+			clist.add(cnt, pos.get(i));
+			bt(i+1, cnt+1);
+		}
+		
+	}
+
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-		board = new int[N][N];
-		chicken = new ArrayList<Pos>();
-		home = new ArrayList<Pos>();
-		for(int i=0; i<N; i++) {
+		
+		arr = new int[N][N]; // 맵 
+		visited = new int[N][N]; // bfs 할때 
+		pos = new ArrayList<>(); // 치킨집 위치 
+		clist = new ArrayList<>(); // 선택된 치킨집  
+		q = new ArrayDeque<int[]>(); // 방문큐
+		res = 10000000; // 결과 
+		
+		for(int i=0 ; i<N ; i++) {
 			st = new StringTokenizer(br.readLine());
-			for(int j=0; j<N; j++) {
-				board[i][j] = Integer.parseInt(st.nextToken());
-				if(board[i][j] == 1) home.add(new Pos(i, j));
-				if(board[i][j] == 2) chicken.add(new Pos(i, j));
-			}
-		}
-		//System.out.println(chicken.size());
-	}
-	
-	
-	static void solution() {
-		for(int i=0; i<N; i++) {
-			List<Pos> temp = new ArrayList<>();
-			dfs(-1, temp);
-		}
-	}
-	
-	static void dfs(int start, List<Pos> curChicken) {
-		if(curChicken.size() == M) {
-			//집과의 거리 구하기
-			int sum=0;	//집들과의 거리 합
-			for(int i=0; i<home.size(); i++) {
-				int curRow = home.get(i).row;		//치킨집 현재 위치
-				int curCol = home.get(i).col;
-				int diffRow=0;							//행 차이
-				int diffCol=0;							//열차이
-				int minSum = Integer.MAX_VALUE;
-				for(int j=0; j<curChicken.size(); j++) {
-					diffRow = Math.abs(curRow - curChicken.get(j).row);	//행차이와 
-					diffCol = Math.abs(curCol - curChicken.get(j).col);	//열차이가 가장 적은 놈 찾는다.
-					minSum = Math.min(diffRow + diffCol, minSum);
+			for(int j=0;j<N;j++) {
+				arr[i][j] = Integer.parseInt(st.nextToken());
+				if( arr[i][j]==2) { // 치킨집 찾으면 위치 넣어줌 
+					pos.add(new int[] {i,j});
 				}
-				sum+=minSum;
 			}
-			ret = Math.min(ret, sum);
-			return;
 		}
 		
-		
-		for(int i = start+1; i<chicken.size(); i++) {
-			List<Pos> temp = new ArrayList<>(curChicken);
-			temp.add(chicken.get(i));
-			dfs(i, temp);
-		}
-	}
-	
-	
-	
-	//조합문제
-	//조합으로 치킨집고르기 -> M개 고름 -> min 구함
+		bt(0,0);
+//		for(int i=0;i<N;i++) {
+//			for(int j=0;j<N;j++) {
+//				System.out.print(visited[i][j]+" ");
+//			}
+//			System.out.println(" ");
+//		}
+		System.out.println(res);
 
-}
-
-class Pos{
-	int row;
-	int col;
-	Pos(int row, int col){
-		this.row = row;
-		this.col = col;
 	}
+
 }
