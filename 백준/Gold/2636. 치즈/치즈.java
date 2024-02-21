@@ -1,95 +1,83 @@
+//치즈 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
+	static int N,M;
+	static int[][] arr;
+	static boolean[][] visited;
+	static int[] dx = {1,0,-1,0};
+	static int[] dy = {0,1,0,-1};
+	static int res,time;
+	static int cnt;
+	 
+	static void bfs() {
+		Queue<int[]> q  = new LinkedList<int[]>();
+		q.add(new int[] {0,0});
+		visited = new boolean[N][M];
+		visited[0][0] = true;
+		int c =0;
+		time++;
 
-	static class Cheese{
-		int row;
-		int col;
-		int value;
-		public Cheese(int row, int col, int value) {
-			super();
-			this.row = row;
-			this.col = col;
-			this.value = value;
-		}
-		@Override
-		public String toString() {
-			return "Cheese [row=" + row + ", col=" + col + ", value=" + value + "]";
-		}
-
-	}
-	
-	static int retT=0;	//걸린시간
-	static int retCheese =0; //마지막 치즈
-	static Cheese[][] MAP;
-	static List<Cheese> eList = new ArrayList<>();
-	static List<Cheese> cList = new ArrayList<>();
-	static boolean [][] visited;
-	static int R;
-	static int C;
-	static BufferedReader br;
-	static int GO[][] = {{-1, 0},{0, -1}, {1,0}, {0,1}};
-	
-	static void solution() {
-		while(!eList.isEmpty()) {
-			for(Cheese chz : eList) {
-				Queue<Cheese> q = new ArrayDeque<>();
-				q.add(chz);
-				while(!q.isEmpty()) {
-					int curRow = q.peek().row;
-					int curCol = q.peek().col;
-					q.poll();
-					for(int i=0; i<4; i++) {
-						int nextRow = curRow + GO[i][0];
-						int nextCol = curCol + GO[i][1];
-						if(nextRow <0 || nextRow >=R || nextCol <0 || nextCol >= C) continue;
-						if(visited[nextRow][nextCol]) continue;
-						if(MAP[nextRow][nextCol].value ==1 ) { //경계부분
-							MAP[nextRow][nextCol].value=0;	//이게 끝나면 1시간 후가 되기 때문에 노상관임 
-							cList.add(MAP[nextRow][nextCol]);
-						}
-						else {
-							q.add(MAP[nextRow][nextCol]);
-						}
-						visited[nextRow][nextCol] = true;
-					}
+		while(!q.isEmpty()) {
+			int[] now = q.poll();
+			
+			for(int d = 0;d<4 ;d++) {
+				int nx = now[0] + dx[d];
+				int ny = now[1] + dy[d];
+				if(nx<0 || nx>=N || ny<0 || ny>=M || visited[nx][ny]) {
+					continue;
+				}
+				if(arr[nx][ny]==0) { // 공기면 방문
+					q.add(new int[] {nx,ny});
+					visited[nx][ny] = true;
+				}else { // 치즈 녹임
+					visited[nx][ny] = true;
+					arr[nx][ny] =0;
+					c++;
 				}
 			}
-			retT++;
-		//	for(Cheese c : cList)
-		//		System.out.println(c);
-		//	System.out.println("time: " + " " + retT + "=====================================================" );
-		//	System.out.println();
-			if(cList.size() !=0) retCheese = cList.size();
-			eList = cList;
-			cList = new ArrayList<Cheese>();
+		}
+		
+		cnt -= c;
+		
+		if( cnt ==0) {
+			res = c;
+			return;
+		}
+		else {
+			bfs();
 		}
 	}
-	
-	public static void main(String[] args) throws IOException{
-		br= new BufferedReader(new InputStreamReader(System.in));
+
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		R = Integer.parseInt(st.nextToken());
-		C = Integer.parseInt(st.nextToken());
-		MAP = new Cheese[R][C];
-		visited = new boolean[R][C];
-		for(int i=0; i<R; i++) {
+		
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		arr = new int[N][M];
+		cnt =0;
+		time = 0;
+		
+		for(int i =0;i<N ; i++) {
 			st = new StringTokenizer(br.readLine());
-			for(int j=0; j<C; j++) {
-				int value = Integer.parseInt(st.nextToken());
-				MAP[i][j] = new Cheese(i,j,value);
+			for(int j =0;j<M ;j++) {
+				arr[i][j] = Integer.parseInt(st.nextToken());
+				if(arr[i][j]==1) {
+					cnt++;
+				}
 			}
 		}
-		visited[0][0] = true;
-		eList.add(new Cheese(0,0,0));
-		solution();
-		System.out.println((retT-1) + " " + retCheese);
+		bfs();
+		System.out.println(time);
+		System.out.println(res);
+		
 	}
+
 }
