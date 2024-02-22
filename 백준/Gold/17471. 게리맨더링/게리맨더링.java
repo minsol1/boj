@@ -1,118 +1,120 @@
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
+// 게리맨더링
 public class Main {
-	static int N;
-	static int [][] MAP;
+	static int N , res;
+	static ArrayList<Integer>[] arr;
+	static ArrayList<Integer> a;
+	static ArrayList<Integer> b;
+	static boolean[] ab;
+	static int[] p;
 	static boolean[] visited;
-	static BufferedReader br;
-	static int people[];
-	static int ret = Integer.MAX_VALUE;
-	static List<Integer> trueList;
-	static List<Integer> falseList;
-	static boolean BFS() {
-		boolean visiting[] = new boolean[N];
-		visiting[trueList.get(0)] = true;
-		List<Integer> qTrue = new ArrayList<>();
-		qTrue.add(trueList.get(0));
-		int idx =0;
-		while(idx<qTrue.size()) {
-			int cur = qTrue.get(idx++);
-			for(int next=0; next<N; next++) {
-				if(MAP[cur][next] == 0 )continue;
-				if(visited[next] != visited[cur]) continue;
-				if(visiting[next]) continue;
-				qTrue.add(next);
-				visiting[next] = true;
-			}
-		}
-	//	System.out.println(qTrue.size());
-		if(qTrue.size() != trueList.size()) return false;
-		
-		List<Integer> qFalse = new ArrayList<>();
-		visiting = new boolean[N];
-		visiting[falseList.get(0)] = true;
-		qFalse.add(falseList.get(0));
-		idx = 0;
-		while(idx<qFalse.size()) {
-			int cur = qFalse.get(idx++);
-			for(int next=0; next<N; next++) {
-				if(MAP[cur][next] == 0 )continue;
-				if(visited[next] != visited[cur]) continue;
-				if(visiting[next]) continue;
-				qFalse.add(next);
-				visiting[next] = true;
-			}
-		}
-		if(falseList.size() != qFalse.size()) return false;
-		return true;
-	}
 	
-	
-	static boolean isConnect() {
-		trueList = new ArrayList<>();
-		falseList = new ArrayList<>();
-		
-		for(int i=0; i<N; i++) {
-			if(visited[i]) trueList.add(i);
-			else falseList.add(i);
-		}
-		//System.out.println(trueList.size() + " " + falseList.size());
-		
-		return BFS();
-	}
-	
-	public static void main(String[] args) throws IOException{
-		br = new BufferedReader(new InputStreamReader(System.in));
-		N = Integer.parseInt(br.readLine());
-		people = new int[N];
-		MAP = new int[N][N];
-		visited=new boolean[N];
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		for(int i=0; i<N; i++) {
-			people[i] = Integer.parseInt(st.nextToken());
-		}
-		for(int i=0; i<N; i++) {
-			MAP[i][i] = 1;
-			st = new StringTokenizer(br.readLine());
-			int num = Integer.parseInt(st.nextToken());
-			for(int j=0; j<num; j++) {
-				int num2 = Integer.parseInt(st.nextToken())-1;
-				MAP[i][num2] = 1;
-				MAP[num2][i] = 1;
-			}
-		}
-		//집단 나누기
-		for(int i=1; i<(1<<N-1); i++) {
-			for(int j=0; j<N; j++) {
-				if((i & 1<<j) !=0) {
-					visited[j] = true;
-				}
-				else {
-					visited[j] = false;
+	static void select(int idx) {
+		if(idx == N+1) {
+			a = new ArrayList<Integer>(); // a 구역
+			b = new ArrayList<Integer>(); // b구역
+			int acnt = 0; // a구역 사람 수 
+			int bcnt = 0; // b구역 사람수 
+
+			for(int i=1; i<N+1 ; i++) {
+				if(ab[i]) {
+					a.add(i);
+				}else {
+					b.add(i);
 				}
 			}
 			
-			if(isConnect()) {
-				int sumTrue =0;
-				int sumFalse = 0;
-				for(int j=0; j<N; j++) {
-					if(visited[j]) sumTrue+=people[j];
-					else sumFalse+=people[j];
+			if(a.size() == 0 || b.size()==0) {
+				return;
+			}
+			
+			if(link(a.get(0)) + link(b.get(0)) == N ) { // 두개다 연결돼있는 경우
+				for(int i=1;i<N+1;i++) {
+					if(ab[i]) {
+						acnt+= p[i];
+					}
+					else {
+						bcnt+=p[i];
+					}
 				}
-				//System.out.println(sumTrue + " " + sumFalse);
-				ret = Math.min(ret, Math.abs(sumTrue - sumFalse));
+				res = Math.min(res, Math.abs(acnt - bcnt));
+			}
+			
+			return;
+		}
+		ab[idx] = true; // a
+		select(idx+1);
+		ab[idx] = false; // b
+		select(idx+1);
+	}
+	
+	static int link(int x) {
+		visited = new boolean[N+1];
+		Queue<Integer> q = new LinkedList<Integer>();
+		q.add(x);
+		visited[x] = true;
+		int c = 1;
+		
+		while(!q.isEmpty()) {
+			int n = q.poll();
+			
+			for(int i=0;i<arr[n].size();i++) {
+				if(!visited[arr[n].get(i)]&& (ab[x]== ab[arr[n].get(i)])) {
+					c++;
+					q.add(arr[n].get(i));
+					visited[arr[n].get(i)] = true;
+				}
 			}
 		}
 		
-		System.out.println(ret == Integer.MAX_VALUE ? -1 : ret);
+		return c;
+	}
+	
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		// TODO Auto-generated method stub
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st;
+		N = Integer.parseInt(br.readLine());
+		res = Integer.MAX_VALUE; // 결과값
+		arr = new ArrayList[N+1]; // 연결정보 
+		ab = new boolean[N+1]; // ab 구역 나눌때 
+		p = new int[N+1]; // 사람 수
 		
+		for(int i=0;i<N+1;i++) {
+			arr[i] = new ArrayList<>(); 
+		}
+		
+		st = new StringTokenizer(br.readLine());
+		for(int i=1 ; i<=N ;i++) {
+			p[i] = Integer.parseInt(st.nextToken());
+		}
+		
+		for(int i=1;i<N+1;i++) { // 연결정보 입력받음
+			st = new StringTokenizer(br.readLine());
+			int s= Integer.parseInt(st.nextToken());
+			for(int j=0;j<s;j++) {
+				arr[i].add(Integer.parseInt(st.nextToken()));
+			}
+		}
+		
+		select(1); // a구역 b구역 선택
+
+		if(res == Integer.MAX_VALUE) {
+			System.out.println(-1);
+		}
+		else {
+			System.out.println(res);
+			
+		}
 	}
 
 }
