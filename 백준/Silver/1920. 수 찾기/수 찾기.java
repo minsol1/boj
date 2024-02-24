@@ -12,12 +12,13 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 		int N = Integer.parseInt(br.readLine());
-		int[] arr = new int[N];
+		int[] arr = new int[N+1];
 		st = new StringTokenizer(br.readLine());
 		
 		for(int i=0;i<N;i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
 		}
+		arr[N] = Integer.MAX_VALUE;
 		Arrays.sort(arr);
 		int M = Integer.parseInt(br.readLine());
 		
@@ -26,23 +27,19 @@ public class Main {
 			int n = Integer.parseInt(st.nextToken());
 			int res = 0;
 			int l = 0;
-			int r = N-1;
+			int r = N;
 			
-			while(r>=l) {
+			while(r!=l) {
 				int m = l+(r-l)/2;
-				
-				if(arr[m]==n) {
-					res = 1;
-					break;
-				}
-				else if(arr[m]<n) {
+				//System.out.println(m);
+				if(arr[m]<n) {
 					l=m+1;
 				}
 				else {
-					r=m-1;
+					r=m;
 				}
 			}
-			
+			res = arr[r]==n ? 1:0;
 			System.out.println(res);
 			
 		}
