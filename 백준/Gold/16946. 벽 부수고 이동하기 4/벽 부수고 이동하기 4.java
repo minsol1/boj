@@ -1,124 +1,112 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+//벽뿌4 
 public class Main {
-	static int[][] arr,group;
-	static int n;
-	static int m;
-	static Map<Integer,Integer> groupSize;
-	public static void main(String[] args) throws Exception{
-
-		//벽 부수고 이동하기 4 BFS/분리집합
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st;
-		st = new StringTokenizer(br.readLine());
-		n = Integer.parseInt(st.nextToken());
-		m = Integer.parseInt(st.nextToken());
+	static int N,M,c;
+	static int[][] arr;
+	static ArrayList<Integer> cnt;
+	static int[] dx = {1,0,-1,0};
+	static int[] dy = {0,1,0,-1};
+	static StringBuilder sb = new StringBuilder();
+	static void bfs(int x, int y,int dep) {
+		Queue<int[]> q = new ArrayDeque<>();
+		q.add(new int[] {x,y});
+		c++;
+		arr[x][y] = dep;
 		
-		arr = new int[n][m];
-		group = new int[n][m];
-		for(int i=0;i<n;i++) {
-			String[] str = br.readLine().split("");
-			for(int j=0;j<m;j++){
-				arr[i][j]= Integer.parseInt(str[j]);
-			}
-		}
-		
-		//각각 그룹마다 다른 key값을 가지게해줌 
-		int groupCnt=1;
-		groupSize = new HashMap<>(); 
-		for(int i=0;i<n;i++) {
-			for(int j=0;j<m;j++) {
-				if(arr[i][j]==0 && group[i][j]==0) {
-					groupSize.put(groupCnt, bfs(i,j,groupCnt));
-					groupCnt++;
-				}
-			}
-		}
-		//답을 이중배열로 출력함
-		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < n; i++) {
-			for(int j = 0; j < m; j++) {
-				if(group[i][j]==0) {
-					sb.append(count(i,j)+"");
+		while(!q.isEmpty()) {
+			int[] now = q.poll();
+			
+			for(int d =0;d<4 ;d++) {
+				int nx = now[0] +dx[d];
+				int ny = now[1] +dy[d];
+				
+				if(nx<0|| nx>=N || ny<0 || ny>=M ) {
 					continue;
 				}
-					sb.append(0+"");
+				
+				if(arr[nx][ny]==0) {
+					c++;
+					arr[nx][ny]= dep;
+					q.add(new int[] {nx,ny});
+				}
+				
 			}
-			sb.append("\n");
+		}
+		
+	}
+
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+
+		arr = new int[N][M];
+		int[][] res = new int[N][M];
+		Set<Integer> set = new HashSet<>();
+		cnt = new ArrayList<>();
+		cnt.add(0);
+		cnt.add(0);
+		
+		for(int i=0;i<N;i++) {
+			String str = br.readLine();
+			for(int j = 0; j<M ; j++) {
+				arr[i][j] = str.charAt(j) - '0';
+				res[i][j] = str.charAt(j) - '0';
+			}
+		}
+		int dep= 2;
+		for(int i=0;i<N;i++) {
+			for(int j = 0; j<M ; j++) {
+				if(arr[i][j]==0) { // 아직 방문 전, 0 
+					c =0;
+					bfs(i,j,dep++);
+					cnt.add(c);
+				}
+			}
+		}
+		
+		for(int i=0;i<N;i++) {
+			for(int j = 0; j<M ; j++) {
+				
+				if(res[i][j] ==1) {
+					for(int d =0;d<4 ;d++) {
+						int nx = i +dx[d];
+						int ny = j +dy[d];
+						
+						if(nx<0|| nx>=N || ny<0 || ny>=M ) {
+							continue;
+						}
+						if(res[nx][ny]!=1) {
+							set.add(arr[nx][ny]);
+							
+						}
+					}
+					
+					for( int s : set) {
+						res[i][j]+=cnt.get(s);
+						
+					}
+					res[i][j]%=10;
+					set.clear();
+				}
+				sb.append(res[i][j]);
+			}
+			sb.append('\n');
 		}
 		System.out.println(sb);
 		
 	}
-	//벽에 맞닿은 그룹의 합을 구함
-	static int count(int x,int y) {
-		int cnt=1;
-		if(arr[x][y]==0) return 0;
-		Set<Integer> set = new HashSet<>();
-		
-		//벽에 맞닿은 4방향만 구하면됨
-		//그 방향의 그룹의 0의 갯수 정보는 이미 구했기 때문
-		for(int i=0;i<4;i++) {
-			int[] dx = {0,1,0,-1};
-			int[] dy = {1,0,-1,0};
-			
-			int sx = x+dx[i];
-			int sy = y+dy[i];
-			
-			if(sx < 0 || sy < 0 || sx>=n || sy >= m || group[sx][sy]==0)
-				continue;
-			//맞닿은 그룹이 중복일 경우를 위해 set에 저장함
-			set.add(group[sx][sy]);
-			
-		}
-		for(int size : set) {
-			cnt+=groupSize.get(size);
-		}
-		
-		return cnt%10;
-	}
-	//그룹마다 몇개의 0이 포함되었는지를 리턴해줌
-	static int bfs(int x,int y,int groupCnt) {
-		int cnt=1;
-		Queue<Point> q = new LinkedList<>();
-		q.add(new Point(x,y));
-		group[x][y]=groupCnt;
-		while(!q.isEmpty()) {
-			Point point = q.poll(); 
-			int[] dx = {0,1,0,-1};
-			int[] dy = {1,0,-1,0};
-			for(int i=0;i<4;i++) {
-				int sx = point.x+dx[i];
-				int sy = point.y+dy[i];
-				
-				if(sx < 0 || sy <0 || sx >= n || sy >= m)
-					continue;
-				//아직 그룹에 속하지 않았고 && 벽이 아니라면 카운트해준다.
-				if(group[sx][sy]==0 && arr[sx][sy]==0) {
-					group[sx][sy]=groupCnt;
-					cnt++;
-					q.add(new Point(sx,sy));
-				}
-			}
-		}
-		return cnt;
-	
-	}
 
 }
-class Point{
-	int x;
-	int y;
-	
-	Point(int x, int y){
-		this.x = x;
-		this.y = y;
-	}
-}
+
