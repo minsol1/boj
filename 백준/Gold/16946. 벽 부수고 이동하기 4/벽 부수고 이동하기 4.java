@@ -2,25 +2,24 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Queue;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 //벽뿌4 
 public class Main {
-	static int N,M,c;
+	static int N,M, cnt;
 	static int[][] arr;
-	static ArrayList<Integer> cnt;
+	static boolean[][] visited;
 	static int[] dx = {1,0,-1,0};
 	static int[] dy = {0,1,0,-1};
+	static Queue<int[]> q1;
 	static StringBuilder sb = new StringBuilder();
-	static void bfs(int x, int y,int dep) {
+	
+	static void bfs(int x, int y) {
 		Queue<int[]> q = new ArrayDeque<>();
 		q.add(new int[] {x,y});
-		c++;
-		arr[x][y] = dep;
+		cnt++;
+		visited[x][y] = true;
 		
 		while(!q.isEmpty()) {
 			int[] now = q.poll();
@@ -33,12 +32,15 @@ public class Main {
 					continue;
 				}
 				
-				if(arr[nx][ny]==0) {
-					c++;
-					arr[nx][ny]= dep;
+				if(arr[nx][ny]==0&&!visited[nx][ny]) {
+					cnt++;
+					visited[nx][ny]= true;
 					q.add(new int[] {nx,ny});
 				}
-				
+				else if(arr[nx][ny]!=0&&!visited[nx][ny]) {
+					visited[nx][ny] = true;
+					q1.add(new int[] {nx,ny});
+				}
 			}
 		}
 		
@@ -51,62 +53,39 @@ public class Main {
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 
+		q1 = new ArrayDeque<>();// 1담을큐 
 		arr = new int[N][M];
-		int[][] res = new int[N][M];
-		Set<Integer> set = new HashSet<>();
-		cnt = new ArrayList<>();
-		cnt.add(0);
-		cnt.add(0);
-		
 		for(int i=0;i<N;i++) {
 			String str = br.readLine();
 			for(int j = 0; j<M ; j++) {
 				arr[i][j] = str.charAt(j) - '0';
-				res[i][j] = str.charAt(j) - '0';
 			}
 		}
-		int dep= 2;
+		visited = new boolean[N][M];
+		
 		for(int i=0;i<N;i++) {
 			for(int j = 0; j<M ; j++) {
-				if(arr[i][j]==0) { // 아직 방문 전, 0 
-					c =0;
-					bfs(i,j,dep++);
-					cnt.add(c);
+				if(!visited[i][j] && arr[i][j]==0) { // 아직 방문 전, 0 
+					cnt =0;
+					bfs(i,j);
+					while(!q1.isEmpty()) {
+						int[] n = q1.poll();
+						visited[n[0]][n[1]] = false;
+						arr[n[0]][n[1]]+=cnt;
+					}
 				}
 			}
 		}
 		
 		for(int i=0;i<N;i++) {
 			for(int j = 0; j<M ; j++) {
-				
-				if(res[i][j] ==1) {
-					for(int d =0;d<4 ;d++) {
-						int nx = i +dx[d];
-						int ny = j +dy[d];
-						
-						if(nx<0|| nx>=N || ny<0 || ny>=M ) {
-							continue;
-						}
-						if(res[nx][ny]!=1) {
-							set.add(arr[nx][ny]);
-							
-						}
-					}
-					
-					for( int s : set) {
-						res[i][j]+=cnt.get(s);
-						
-					}
-					res[i][j]%=10;
-					set.clear();
-				}
-				sb.append(res[i][j]);
+				sb.append(arr[i][j]%10);
 			}
 			sb.append('\n');
 		}
+		
 		System.out.println(sb);
 		
 	}
 
 }
-
