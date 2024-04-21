@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
 
 public class Main {
 
@@ -12,44 +11,27 @@ public class Main {
 		
 		int C = Integer.parseInt(input[0]);
 		int N = Integer.parseInt(input[1]);
-		int[][] arr = new int[N][2];
-		int max_w=0;
-		int res = Integer.MAX_VALUE;
+		int[] dp = new int[C+101];
+		int c, w;
+		int maxv = 1000*(C+101);
+		int res = maxv;
+		for(int i=1 ;i<C+101;i++) {
+			dp[i] = maxv;
+		}
 
 		for(int i=0;i<N;i++) {
 			input = br.readLine().split(" ");
-			arr[i][0] = Integer.parseInt(input[0]);
-			arr[i][1] = Integer.parseInt(input[1]);
-			max_w = max_w > arr[i][1]? max_w :arr[i][1];
-		}
-	
-		int[] dp = new int[C+max_w+1];
-		
-		for(int i =0;i<N;i++) {
-			if(dp[arr[i][1]] ==0) {
-				dp[arr[i][1]] = arr[i][0];
-			}
-			else {
-				dp[arr[i][1]] = dp[arr[i][1]]< arr[i][0]?dp[arr[i][1]]:arr[i][0];
-			}
-			for(int j=0;j<=C;j++) {
-				if(dp[j]!=0) {
-					if(dp[j+arr[i][1]]==0) {
-						dp[j+arr[i][1]] = dp[j] + arr[i][0];
-					}else {
-						dp[j+arr[i][1]] = dp[j+arr[i][1]]< dp[j]+arr[i][0]?dp[j+arr[i][1]]:dp[j]+arr[i][0];
-						
-					}
-					
-				}
+			c = Integer.parseInt(input[0]);
+			w = Integer.parseInt(input[1]);
+			
+			
+			for(int j=w;j<=C+100;j++) {
+				dp[j] = dp[j]< dp[j-w]+c?dp[j]: dp[j-w]+c;
 			}
 		}
 		
-		for(int i = C ;i<C+max_w+1 ;i++) {
-			if(dp[i]!=0) {
-				res = res < dp[i]? res : dp[i];
-				
-			}
+		for(int i = C ;i<C+101 ;i++) {
+			res = res < dp[i]? res : dp[i];
 		}
 		
 		System.out.println(res);
