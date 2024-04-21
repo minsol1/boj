@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,18 +8,18 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
+		String[] input = br.readLine().split(" ");
 		
-		int C = Integer.parseInt(st.nextToken());
-		int N = Integer.parseInt(st.nextToken());
+		int C = Integer.parseInt(input[0]);
+		int N = Integer.parseInt(input[1]);
 		int[][] arr = new int[N][2];
 		int max_w=0;
 		int res = Integer.MAX_VALUE;
 
 		for(int i=0;i<N;i++) {
-			st = new StringTokenizer(br.readLine());
-			arr[i][0] = Integer.parseInt(st.nextToken());
-			arr[i][1] = Integer.parseInt(st.nextToken());
+			input = br.readLine().split(" ");
+			arr[i][0] = Integer.parseInt(input[0]);
+			arr[i][1] = Integer.parseInt(input[1]);
 			max_w = max_w > arr[i][1]? max_w :arr[i][1];
 		}
 	
