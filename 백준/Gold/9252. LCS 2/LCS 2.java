@@ -31,19 +31,21 @@ public class Main {
         int j = str2_len;
 
         while(true){
-            if(i == 0  || j == 0){
+            if(dp[i][j]==0){
                 break;
             }
-            if(dp[i-1][j] == dp[i][j]){
+
+            if(dp[i][j] > dp[i-1][j] && dp[i][j] > dp[i][j-1]){
+                sb.append(str2.charAt(j-1));
+                i--;
+                j--;
+            }
+            else if(dp[i-1][j] == dp[i][j]){
                 i--;
             }
             else if(dp[i][j] == dp[i][j-1]){
                 j--;
 
-            }else{
-                sb.append(str2.charAt(j-1));
-                i--;
-                j--;
             }
         }
 
