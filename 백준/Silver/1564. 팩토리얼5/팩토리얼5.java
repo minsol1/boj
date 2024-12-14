@@ -2,30 +2,25 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-
 public class Main {
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
-
-        long n = Integer.parseInt(br.readLine());
-        long num = 1;
-        long k = (long)1e12;
-
-        for(long i=1; i<=n; i++) {
-            num *=i;
-            while(num%10==0)
-                num/=10;
-            num%=k;
+        int N = Integer.parseInt(br.readLine());
+        long res=1;
+        long k = 1000000000000L;
+        for(int i=1; i<=N ; i++){
+            res *=i;
+            while(res%10==0){
+                res /=10;
+            }
+            res %=k;
         }
 
-        num %= 100000;
-        if(num<10000) sb.append(0);
-        if(num<1000) sb.append(0);
-        if(num<100) sb.append(0);
-        if(num<10) sb.append(0);
-        sb.append(num);
-        System.out.print(sb);
+        res%=100000;
+
+        String tem = String.format("%05d",res);
+        System.out.println(tem);
 
     }
 }
