@@ -21,13 +21,13 @@ public class Main {
 
         for(int i =1;i<N+1;i++){
             if(i == M) continue;
-            if(arr[i][0]< arr[M][0]){
+            if(arr[i][0]> arr[M][0]){
                 res++;
             }
-            else if(arr[i][0]== arr[M][0] && arr[i][1]<arr[M][1]){
+            else if(arr[i][0]== arr[M][0] && arr[i][1]>arr[M][1]){
                 res++;
             }
-            else if(arr[i][0]== arr[M][0] && arr[i][1]==arr[M][1]&& arr[i][2]<arr[M][2]){
+            else if(arr[i][0]== arr[M][0] && arr[i][1]==arr[M][1]&& arr[i][2]>arr[M][2]){
                 res++;
             }
 
