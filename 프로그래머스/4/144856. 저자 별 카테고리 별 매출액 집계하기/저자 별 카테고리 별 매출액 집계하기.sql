@@ -1,9 +1,9 @@
--- 코드를 입력하세요
-SELECT ba.AUTHOR_ID,ba.AUTHOR_NAME, ba.CATEGORY, sum(SALES*ba.PRICE) as TOTAL_SALES
-from (select BOOK_ID,CATEGORY,BOOK.AUTHOR_ID AUTHOR_ID,PRICE,AUTHOR.AUTHOR_NAME AUTHOR_NAME
-     from BOOK left join AUTHOR
-     on BOOK.AUTHOR_ID =AUTHOR.AUTHOR_ID) ba right join BOOK_SALES bs
-     on ba.BOOK_ID = bs.BOOK_ID
-where year(SALES_DATE) = 2022 and month(SALES_DATE) =1
-group by ba.AUTHOR_ID, ba.CATEGORY
-order by ba.AUTHOR_ID , ba.CATEGORY desc
+select a.AUTHOR_ID,a.AUTHOR_NAME,b.CATEGORY, sum(b.price*bs.SALES) SALES
+from book b 
+        left join AUTHOR a
+        on b.AUTHOR_ID = a.AUTHOR_ID
+        right join BOOK_SALES bs
+        on b.BOOK_ID = bs.BOOK_ID
+where year(bs.SALES_DATE) =2022 and month(bs.SALES_DATE) =01
+group by a.AUTHOR_NAME,b.CATEGORY
+order by a.AUTHOR_ID , b.CATEGORY desc
