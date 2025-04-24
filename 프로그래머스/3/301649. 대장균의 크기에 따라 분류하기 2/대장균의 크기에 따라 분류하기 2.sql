@@ -1,11 +1,10 @@
-select ID, case
-when r =1 then "CRITICAL"
-when r =2 then "HIGH"
-when r =3 then "MEDIUM"
-else "LOW"
-end as "COLONY_NAME"
-from (
-    select ID, NTILE(4) over(order by SIZE_OF_COLONY desc) as r
-    from ECOLI_DATA
-) ranked_data
+select ID ,
+case 
+    when NTILE(4) over (order by SIZE_OF_COLONY) =1 then "LOW"
+    when NTILE(4) over (order by SIZE_OF_COLONY) =2 then "MEDIUM"
+    when NTILE(4) over (order by SIZE_OF_COLONY) =3 then "HIGH"
+    else "CRITICAL"
+end
+COLONY_NAME
+from ECOLI_DATA
 order by ID
