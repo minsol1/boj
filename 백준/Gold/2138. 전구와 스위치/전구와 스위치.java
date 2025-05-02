@@ -18,10 +18,8 @@ public class Main {
                 }
             }
         }
-        for(int i =0;i<N;i++){
-            if(arr[i]!=arr2[i]) {
-                return;
-            }
+        if(arr[N-1]!=arr2[N-1]) {
+            return;
         }
 
         res = res<cnt? res:cnt;
@@ -38,14 +36,15 @@ public class Main {
 
         String str = br.readLine();
         for(int i =0;i<N;i++){
-            arr1[i] = str.charAt(i)=='1';
             arr[i] = str.charAt(i)=='1';
+            arr1[i] = str.charAt(i)=='1';
         }
 
         str = br.readLine();
         for(int i =0;i<N;i++){
             arr2[i] = str.charAt(i)=='1';
         }
+        
         greedy(arr1,0);
         arr[0] = !arr[0];
         arr[1] = !arr[1];
