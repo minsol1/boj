@@ -1,6 +1,5 @@
--- 코드를 작성해주세요
-select count(*) as FISH_COUNT, max(LENGTH) as MAX_LENGTH, FISH_TYPE
-from (select ID, FISH_TYPE, IFNULL(LENGTH,10) as LENGTH from FISH_INFO) FISH_INFO
+select count(*) FISH_COUNT, max(LENGTH) MAX_LENGTH,FISH_TYPE
+from (select ID, FISH_TYPE, ifnull(LENGTH,10) LENGTH from FISH_INFO) fi
 group by FISH_TYPE
-having sum(LENGTH)/count(*) >=33
+having avg(LENGTH)>=33
 order by FISH_TYPE
