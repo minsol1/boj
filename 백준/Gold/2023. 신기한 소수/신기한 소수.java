@@ -3,6 +3,7 @@ import java.util.*;
 
 public class Main {
     public static int N;
+    public static StringBuilder sb;
 
     public static boolean getPrime(int n){
         if(n<2) return false;
@@ -16,11 +17,11 @@ public class Main {
         if(c!=0 && !getPrime(n)) return;
 
         if (c == N) {
-            System.out.println(n);
+            sb.append(n).append('\n');
             return;
         }
 
-        for(int i=0;i<10;i++){
+        for(int i=1;i<10;i++){
             dfs(n*10+i,c+1);
         }
 
@@ -28,11 +29,13 @@ public class Main {
 
     public static void main(String[] args)throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        sb = new StringBuilder();
 
         N = Integer.parseInt(br.readLine());
 
         dfs(0,0);
 
+        System.out.println(sb);
 
     }
 }
