@@ -1,50 +1,38 @@
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-	static StringBuilder sb = new StringBuilder();
-	static int N;
-	
-	static boolean isPrime(int num) {
-		if(num<2) {
-			return false;
-		}
-		for(int i=2;i<=Math.sqrt(num);i++) {
-			if(num%i==0) {
-				return false;
-			}
-		}
-		
-		return true;
-	}
-	
-	static void dfs(int res, int cnt) {
-		if(cnt == N ) {
-			sb.append(res).append('\n');
-			return;
-		}
-		res *=10;
-		
-		for(int i=1;i<10;i++) {
-			int next = res+i;
-			
-			if(isPrime(next)) {
-				dfs(next,cnt+1);
-			}
-		}
-	}
+    public static int N;
 
-	public static void main(String[] args) throws NumberFormatException, IOException {
-		// TODO Auto-generated method stub
-		
-		BufferedReader br =new BufferedReader(new InputStreamReader(System.in));
-		N = Integer.parseInt(br.readLine());
-		
-		dfs(0,0);
-		System.out.print(sb);
-		
-	}
+    public static boolean getPrime(int n){
+        if(n<2) return false;
+        for(int i=2; i<n;i++){
+            if(n%i==0) return false;
+        }
+        return true;
+    }
 
+    public static void dfs(int n, int c){
+        if(c!=0 && !getPrime(n)) return;
+
+        if (c == N) {
+            System.out.println(n);
+            return;
+        }
+
+        for(int i=0;i<10;i++){
+            dfs(n*10+i,c+1);
+        }
+
+    }
+
+    public static void main(String[] args)throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        N = Integer.parseInt(br.readLine());
+
+        dfs(0,0);
+
+
+    }
 }
