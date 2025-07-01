@@ -1,84 +1,74 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Deque;
-import java.util.Stack;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		
-		int N = Integer.parseInt(st.nextToken());
-		int M = Integer.parseInt(st.nextToken());
-		int now=0;
-		Stack<Integer> bs = new Stack<>();
-		Stack<Integer> fs = new Stack<>();
+    public static void main(String[] args)throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        Stack<Integer> fstack = new Stack<>();
+        Stack<Integer> bstack = new Stack<>();
 
-		for( int t=0;t<M;t++) {
-			st = new StringTokenizer(br.readLine());
-			String str = st.nextToken();
-			
-			if(str.equals("A")) {
-				int n = Integer.parseInt(st.nextToken());
-				
-				if(now!=0) {
-					bs.push(now);
-				}
-				now =n;
-				fs.clear();
-				
-				
-			}else if(str.equals("B")) {
-				if(!bs.isEmpty()) {
-					fs.push(now);
-					now = bs.pop();
-				}
-				
-			}else if(str.equals("F")) {
-				if(!fs.isEmpty()) {
-					bs.push(now);
-					now = fs.pop();
-				}
-			}else if(str.equals("C")) {
-				Stack<Integer> arr = new Stack<>();
-				if(!bs.isEmpty()) {
-					while(!bs.isEmpty()) {
-						int n = bs.pop();
-						
-						if(arr.isEmpty() || arr.peek()!=n) {
-							arr.push(n);
-						}
-					}
-					bs.clear();
-					while(!arr.isEmpty()) {
-						bs.add(arr.pop());
-					}
-				}
-			}
-			
-		}
-		
-		System.out.println(now);
-		if(!bs.isEmpty()) {
-			while(!bs.isEmpty()) {
-				System.out.print(bs.pop()+" ");
-			}
-			System.out.println("");
-		}else {
-			System.out.println(-1);
-		}
-		if(!fs.isEmpty()) {
-			while(!fs.isEmpty()) {
-				System.out.print(fs.pop()+" ");
-			}
-			System.out.println("");
-		}else {
-			System.out.println(-1);
-		}
-		
-	}
+        int N = Integer.parseInt(st.nextToken());
+        int Q = Integer.parseInt(st.nextToken());
+        int now =-1;
 
+        for(int i =0;i<Q;i++){
+            st = new StringTokenizer(br.readLine());
+            String cmd = st.nextToken();
+
+            if(cmd.equals("B")){
+                if(bstack.isEmpty() || now == -1) continue;
+                fstack.add(now);
+                now=bstack.pop();
+            }
+            if(cmd.equals("F")){
+                if(fstack.isEmpty() || now == -1) continue;
+                bstack.add(now);
+                now=fstack.pop();
+            }
+            if(cmd.equals("A")){
+                if(now!=-1){
+                    bstack.add(now);
+                }
+                now = Integer.parseInt(st.nextToken());
+                fstack.clear();
+            }
+            if(cmd.equals("C")){
+                if(bstack.isEmpty()) continue;
+                Stack<Integer> tmp = new Stack<>();
+                int pre = -1;
+                for(int n : bstack){
+                    if(pre != n) {
+                        tmp.add(n);
+                        pre = n;
+                    }
+                }
+                bstack.clear();
+                for(int n : tmp){
+                    bstack.add(n);
+                }
+            }
+        }
+
+        System.out.println(now);
+        if(bstack.isEmpty()){
+            System.out.println(-1);
+        }
+        else{
+            while(!bstack.isEmpty())
+                System.out.print(bstack.pop()+" ");
+            System.out.println("");
+        }
+
+        if(fstack.isEmpty()){
+            System.out.println(-1);
+        }
+        else{
+            while(!fstack.isEmpty())
+                System.out.print(fstack.pop()+" ");
+            System.out.println("");
+        }
+
+    }
 }
