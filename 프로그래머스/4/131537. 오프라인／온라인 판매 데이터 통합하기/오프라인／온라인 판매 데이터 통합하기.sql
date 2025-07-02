@@ -1,8 +1,17 @@
+with sale
+as(
+select SALES_DATE,PRODUCT_ID,USER_ID,SALES_AMOUNT
+from ONLINE_SALE
+where SALES_DATE like"2022-03%"
+
+    union
+    
+select SALES_DATE,PRODUCT_ID, null as USER_ID,SALES_AMOUNT
+from OFFLINE_SALE
+where SALES_DATE like"2022-03%"
+
+)
+
 select date_format(SALES_DATE,"%Y-%m-%d") SALES_DATE,PRODUCT_ID,USER_ID,SALES_AMOUNT
-from (select ONLINE_SALE_ID,USER_ID,PRODUCT_ID,SALES_AMOUNT,SALES_DATE
-     from ONLINE_SALE
-     union all 
-     select OFFLINE_SALE_ID, null as USER_ID,PRODUCT_ID,SALES_AMOUNT,SALES_DATE
-     from OFFLINE_SALE) as t
-where SALES_DATE like "2022-03%"
-order by SALES_DATE, PRODUCT_ID,USER_ID
+from sale
+order by SALES_DATE, PRODUCT_ID, USER_ID
