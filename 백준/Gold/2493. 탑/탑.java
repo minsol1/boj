@@ -1,48 +1,35 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Stack;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-	static class Node{
-		int data;
-		int idx;
-		
-		public Node(int data, int idx) {
-			this.data = data;
-			this.idx = idx;
-		}
-	}
 
-	public static void main(String[] args) throws NumberFormatException, IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
-	
-		int N = Integer.parseInt(br.readLine());
-		Stack<Node> stack = new Stack<>();
-		
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		
-		for(int i=0;i<N;i++) {
-			int n = Integer.parseInt(st.nextToken());
-			int res =0;
-			
-			while(!stack.isEmpty()) {
-				if(stack.peek().data>=n) {
-					res = stack.peek().idx;
-					break;
-					
-				}else {
-					stack.pop();
-				}
-			}
-			sb.append(res).append(" ");
-			stack.add(new Node(n,i+1));
-		}
-		
-		System.out.println(sb);
+    public static void main(String[] args)throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int N = Integer.parseInt(br.readLine());
+        HashMap<Integer,Integer> hm = new HashMap<>();
+        Stack<Integer> stack = new Stack<>();
+        StringBuilder sb = new StringBuilder();
 
-	}
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for(int i =1;i<N+1;i++){
+            int n = Integer.parseInt(st.nextToken());
+            hm.put(n,i);
 
+           while(!stack.isEmpty()){
+               if(stack.peek()>n){
+                   sb.append(hm.get(stack.peek())).append(" ");
+                   break;
+               }
+               stack.pop();
+           }
+           if(stack.isEmpty()) sb.append(0).append(" ");
+
+           stack.add(n);
+
+        }
+
+        System.out.println(sb);
+
+
+    }
 }
