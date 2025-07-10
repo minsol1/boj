@@ -11,10 +11,11 @@ public class Main {
         for(int i=0;i<n;i++){
             for(int j =0;j<n;j++){
                 if(arr[x+i][y+j]!=p){
-                    dfs(x,y,n/2);
-                    dfs(x+n/2,y,n/2);
-                    dfs(x,y+n/2,n/2);
-                    dfs(x+n/2,y+n/2,n/2);
+                    int d = n/2;
+                    dfs(x,y,d);
+                    dfs(x+d,y,d);
+                    dfs(x,y+d,d);
+                    dfs(x+d,y+d,d);
                     return;
                 }
             }
@@ -35,9 +36,9 @@ public class Main {
         blue =0;
         white = 0;
 
-
+        StringTokenizer st;
         for(int i=0;i<N;i++){
-            StringTokenizer st = new StringTokenizer(br.readLine());
+            st = new StringTokenizer(br.readLine());
 
             for(int j =0;j<N;j++){
                 arr[i][j]= Integer.parseInt(st.nextToken());
