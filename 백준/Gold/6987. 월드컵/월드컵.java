@@ -1,92 +1,80 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
-//월드컵 
 public class Main {
-	static int N=6;
-	static int[][] arr;
-	static boolean end;
-	static StringBuilder sb = new StringBuilder();
-	
-	static void dfs(int cur, int idx) {
-		if(end) {
-			return;
-		}
-		
-		if(idx ==N) {
-			cur++;
-			idx =cur+1;
-		}
-		
-		if(cur==N-1 && idx==N) {
-			end = true;
-			return;
-		}
 
-	    //cur 이 이긴 경우 
-	    if(arr[cur][0]>0 && arr[idx][2]>0) {
-	       arr[cur][0] --;
-	       arr[idx][2]--;
-	       dfs(cur, idx+1);
-	       arr[cur][0] ++;
-	       arr[idx][2]++;
-	
-	    }
-	    // cur 무승부 
-	
-	    if(arr[cur][1]>0 && arr[idx][1]>0) {
-	       arr[cur][1] --;
-	       arr[idx][1]--;
-	       dfs(cur, idx+1);
-	       arr[cur][1] ++;
-	       arr[idx][1]++;
-	    }
-	    
-	    // cur 짐
-	    if(arr[cur][2]>0 && arr[idx][0]>0) {
-		       arr[cur][2] --;
-		       arr[idx][0]--;
-		       dfs(cur, idx+1);
-		       arr[cur][2] ++;
-		       arr[idx][0]++;
-		}
-		
-	}
+    public static int[][] arr;
+    public static boolean flag;
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st;
+    public static void dfs(int idx,int nxt){
+        if(flag) return;
 
-		for(int t=0;t<4;t++) {
-			st = new StringTokenizer(br.readLine());
-			arr = new int[N][3]; 
-			end = false;
-			boolean f = true;
-			
-			for(int i = 0; i<6;i++) {
-				arr[i][0] = Integer.parseInt(st.nextToken());
-				arr[i][1] = Integer.parseInt(st.nextToken());
-				arr[i][2] = Integer.parseInt(st.nextToken());
-				
-				if(arr[i][0]+arr[i][1]+arr[i][2] !=5) {
-					f = false;
-				}
-			}
-			if(f) {
-				dfs(0,1);
-			}
-			if(end) {
-				sb.append("1 ");
-			}
-			else {
-				sb.append("0 ");
-			}
-			
-		}
-		
-		System.out.println(sb);
-	}
+        if(idx ==5){
+            flag = true;
+            return;
+        }
 
+        if(arr[idx][0]>0 && arr[nxt][2]>0){
+            arr[idx][0]--;
+            arr[nxt][2]--;
+
+            if(nxt==5){
+                dfs(idx+1,idx+2);
+            }
+            else dfs(idx,nxt+1);
+            arr[idx][0]++;
+            arr[nxt][2]++;
+        }
+        if(arr[idx][2]>0 && arr[nxt][0]>0){
+            arr[idx][2]--;
+            arr[nxt][0]--;
+
+            if(nxt==5){
+                dfs(idx+1,idx+2);
+            }
+            else dfs(idx,nxt+1);
+            arr[idx][2]++;
+            arr[nxt][0]++;
+        }
+        if(arr[idx][1]>0 && arr[nxt][1]>0){
+            arr[idx][1]--;
+            arr[nxt][1]--;
+
+            if(nxt==5){
+                dfs(idx+1,idx+2);
+            }
+            else dfs(idx,nxt+1);
+            arr[idx][1]++;
+            arr[nxt][1]++;
+        }
+
+
+    }
+
+    public static void main(String[] args)throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+
+        for(int t =0;t<4;t++){
+            arr = new int[6][3];
+            flag = true;
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            for(int i =0;i<6;i++){
+                arr[i][0]=Integer.parseInt(st.nextToken());
+                arr[i][1]=Integer.parseInt(st.nextToken());
+                arr[i][2]=Integer.parseInt(st.nextToken());
+                if(arr[i][0]+arr[i][1]+arr[i][2]!=5){
+                    flag = false;
+                }
+            }
+            if(flag){
+                flag = false;
+                dfs(0,1);
+            }
+
+            if(flag) System.out.print(1+" ");
+            else System.out.print(0+" ");
+
+        }
+    }
 }
