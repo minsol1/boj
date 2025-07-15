@@ -11,7 +11,7 @@ public class Main {
             return;
         }
 
-        if(arr[idx][0]<=0) {
+        if(arr[idx][0]<=0 || cnt==N-1) {
             dfs(idx+1,cnt);
             return;
         }
@@ -33,7 +33,6 @@ public class Main {
                 arr[idx][0]+=arr[i][1];
 
             }
-            else dfs(idx+1,cnt);
         }
 
     }
