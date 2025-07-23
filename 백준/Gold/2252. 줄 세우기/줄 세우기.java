@@ -9,6 +9,7 @@ public class Main {
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
         int[] cnt = new int[N+1];
+        StringBuilder sb = new StringBuilder();
         ArrayList[] arr = new ArrayList[N+1];
 
         for(int i =0;i<N+1;i++){
@@ -32,13 +33,15 @@ public class Main {
 
         while(!q.isEmpty()){
             int now = q.poll();
-            System.out.print(now+" ");
+            sb.append(now).append(" ");
+            
             for(int i =0;i<arr[now].size();i++){
                 int n = (int)arr[now].get(i);
                 cnt[n]--;
                 if(cnt[n]==0) q.add(n);
             }
         }
+        System.out.println(sb);
 
     }
 }
