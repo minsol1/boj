@@ -1,76 +1,61 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException {
+    public static void main(String[] args)throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		int N = Integer.parseInt(st.nextToken());
-		int M = Integer.parseInt(st.nextToken());
-		
-		ArrayList<Integer>[] arr = new ArrayList[N+1];
-		ArrayList<Integer> res = new ArrayList<>();
-		int[] degree = new int[N+1];
-		
-		for(int i =0;i<N+1;i++) {
-			arr[i] = new ArrayList<>();
-		}
-		
-		for(int i =0;i<M;i++) {
-			st = new StringTokenizer(br.readLine());
-			int n = Integer.parseInt(st.nextToken());
-			int p = Integer.parseInt(st.nextToken());
-			
-			for(int j=1;j<n;j++) {
-				int c = Integer.parseInt(st.nextToken());
-				
-				arr[p].add(c);
-				degree[c]++;
-				p= c;
-			}
-			
-		}
-		
-		Queue<Integer> q = new ArrayDeque<>();
-		for(int i=1; i<=N;i++) {
-			if(degree[i]==0) {
-				q.add(i);
-			}
-		}
-		
-		if(q.isEmpty()) {
-			System.out.println(0);
-		}
-		else {
-			while(!q.isEmpty()) {
-				int num = q.poll();
-				
-				res.add(num);
-				for(int i=0;i<arr[num].size();i++) {
-					degree[arr[num].get(i)]--;
-					if(degree[arr[num].get(i)]==0) {
-						q.add(arr[num].get(i));
-					}
-				}
-			}
-			
-			if(res.size()!=N) {
-				System.out.println(0);
-			}
-			else {
-				for(int n : res) {
-					System.out.println(n);
-				}
-			}
-		}
-		
-	}
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
+        boolean[] visited = new boolean[N+1];
+        int[] cnt = new int[N+1];
+        ArrayList[] arr = new ArrayList[N+1];
+        for(int i =0; i<N+1;i++){
+            arr[i] = new ArrayList<>();
+        }
+
+        for(int i =0;i<M;i++){
+            st = new StringTokenizer(br.readLine());
+            int n = Integer.parseInt(st.nextToken());
+            int pre =Integer.parseInt(st.nextToken());
+            while(st.hasMoreTokens()){
+                int a = Integer.parseInt(st.nextToken());
+                cnt[a]++;
+                arr[pre].add(a);
+                pre = a;
+
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        Queue<Integer> q = new ArrayDeque<>();
+        for(int i =1; i<N+1; i++){
+            if(cnt[i]==0){
+                q.add(i);
+                visited[i] = true;
+            }
+        }
+
+        while(!q.isEmpty()){
+            int now = q.poll();
+            visited[now] = true;
+            sb.append(now).append('\n');
+            for(int i =0;i<arr[now].size();i++){
+                int nxt = (int)arr[now].get(i);
+                cnt[nxt] --;
+                if(cnt[nxt] == 0) q.add(nxt);
+            }
+        }
+        for(int i =1;i<N+1;i++){
+            if(!visited[i]){
+                sb = new StringBuilder();
+                sb.append(0);
+            }
+        }
+
+        System.out.println(sb);
+    }
 }
