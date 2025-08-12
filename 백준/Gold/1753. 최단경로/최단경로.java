@@ -1,90 +1,81 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.PriorityQueue;
-import java.util.StringTokenizer;
-
-
-public class Main {
-	static ArrayList[] li;
-	static int[] dist;
-
-	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		
-		int V = Integer.parseInt(st.nextToken()); //정점 수 
-		int E = Integer.parseInt(st.nextToken()); //간선 수 
-		int K = Integer.parseInt(br.readLine()); // 시작 노드 번호 
-		
-		li = new ArrayList[V+1];
-		dist = new int[V+1];
-		
-		for(int i=0;i<V+1 ;i++) {
-			li[i] = new ArrayList<Node>();
-			dist[i] = Integer.MAX_VALUE;
-		}
-		
-		for(int i=0;i<E ; i++) {
-			st = new StringTokenizer(br.readLine());
-			
-			int u = Integer.parseInt(st.nextToken());
-			int v = Integer.parseInt(st.nextToken());
-			int w = Integer.parseInt(st.nextToken());
-			
-			li[u].add(new Node(v,w));
-		}
-		
-		di(K);
-		
-		for(int i=1;i<V+1;i++) {
-			if(dist[i] == Integer.MAX_VALUE) {
-				System.out.println("INF");
-			}else {
-				System.out.println(dist[i]);
-			}
-		}
-
-	}
-	
-	static void di(int s) {
-		PriorityQueue<Node> pq = new PriorityQueue<>();
-		dist[s] = 0;
-		pq.add(new Node(s,0));
-		
-		while(!pq.isEmpty()) {
-			Node now = pq.poll();
-			
-			int len = li[now.v].size();
-			for(int i=0;i<len;i++) {
-				Node next = (Node) li[now.v].get(i);
-				
-				if(dist[next.v] > now.w + next.w) {
-					dist[next.v] = now.w + next.w;
-					pq.add(new Node(next.v , dist[next.v]));
-				}
-			}
-		}
-	}
-	
-}
-
+import java.io.*;
+import java.util.*;
 
 class Node implements Comparable<Node>{
-	int v,w;
-	
-	public Node(int v, int w) {
-		this.v = v;
-		this.w = w;
-	}
+    int e;
+    int w;
 
-	@Override
-	public int compareTo(Node o) {
-		// TODO Auto-generated method stub
-		return this.w - o.w;
-	}
-	
-	
+    public Node(int e , int w){
+        this.e = e;
+        this.w = w;
+    }
+
+    @Override
+    public int compareTo(Node o) {
+        return w-o.w;
+    }
+
+}
+public class Main {
+
+    public static int V,E,K;
+    public static int[] dist;
+    public static ArrayList[] arr;
+
+    public static void bfs(int s){
+        PriorityQueue<Node> pq =new PriorityQueue<>();
+        dist[s]= 0;
+        pq.add(new Node(s,0));
+
+        while(!pq.isEmpty())
+        {
+            Node now = pq.poll();
+
+            for(int i =0;i<arr[now.e].size();i++){
+                Node nx = (Node)arr[now.e].get(i);
+                int next_dest = nx.e;
+                int next_dist = now.w+ nx.w;
+
+                if(dist[next_dest] > next_dist){
+                    dist[next_dest] = next_dist;
+                    pq.add(new Node(next_dest, next_dist));
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args)throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        V = Integer.parseInt(st.nextToken());
+        E = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(br.readLine());
+        dist = new int[V+1];
+        arr = new ArrayList[V+1];
+
+        for(int i =0;i<=V;i++){
+            arr[i] = new ArrayList<>();
+            dist[i] = Integer.MAX_VALUE;
+        }
+
+        for(int i =0;i<E;i++){
+            st = new StringTokenizer(br.readLine());
+            int s = Integer.parseInt(st.nextToken());
+            int e = Integer.parseInt(st.nextToken());
+            int w = Integer.parseInt(st.nextToken());
+            arr[s].add(new Node(e,w));
+        }
+
+        bfs(K);
+
+        StringBuilder sb = new StringBuilder();
+        for(int i =1; i<V+1; i++){
+            if(dist[i]== Integer.MAX_VALUE)
+                sb.append("INF").append('\n');
+            else sb.append(dist[i]).append('\n');
+        }
+
+        System.out.print(sb);
+
+    }
 }
