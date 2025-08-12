@@ -1,72 +1,74 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
-// 젤다 
+class Node implements Comparable<Node>{
+    int x;
+    int y;
+    int c;
+
+    public Node(int x, int y, int c){
+        this.x = x;
+        this.y = y;
+        this.c = c;
+    }
+
+    public int compareTo(Node o){
+        return c-o.c;
+    }
+}
+
 public class Main {
-	static int N;
-	static int[] dx = { 1, 0, -1, 0 };
-	static int[] dy = { 0, 1, 0, -1 };
-	static int[][] arr;
-	static int[][] dist;
 
-	static void di() {
-		PriorityQueue<int[]> q = new PriorityQueue<int[]>((o1, o2) -> o1[2]-o2[2]);
-		q.add(new int[] { 0, 0 ,arr[0][0]});
-		dist[0][0] = arr[0][0];
+    public static int N;
+    public static int[][] arr;
+    public static int[][] visited;
+    public static int[] dx = {0,1,0,-1};
+    public static int[] dy = {1,0,-1,0};
 
-		while (!q.isEmpty()) {
-			int[] now = q.poll();
-	
-			if(now[0] == N-1 && now[1] == N-1) {
-				return;
-			}
+    public static void bfs(){
+        visited[0][0] = arr[0][0];
+        PriorityQueue<Node> q = new PriorityQueue<>();
+        q.add(new Node(0,0,visited[0][0]));
 
-			for (int d = 0; d < 4; d++) {
+        while(!q.isEmpty()){
+            Node now = q.poll();
 
-				int nx = now[0] + dx[d];
-				int ny = now[1] + dy[d];
+            for(int d =0;d<4;d++){
+                int nx = now.x + dx[d];
+                int ny = now.y + dy[d];
 
-				if (nx < 0 || nx >= N || ny < 0 || ny >= N ) {
-					continue;
-				}
-				if (dist[nx][ny] > dist[now[0]][now[1]] + arr[nx][ny]) {
-					dist[nx][ny] = dist[now[0]][now[1]] + arr[nx][ny];
-					q.add(new int[] { nx, ny ,dist[nx][ny]});
-				}
-			}
+                if(nx <0 || nx >=N || ny <0 || ny >=N) continue;
 
-		}
-	}
+                if(visited[nx][ny] > now.c + arr[nx][ny]){
+                    visited[nx][ny] = now.c + arr[nx][ny];
+                    q.add(new Node(nx,ny, now.c + arr[nx][ny]));
+                }
+            }
+        }
+    }
 
-	public static void main(String[] args) throws NumberFormatException, IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		N = Integer.parseInt(br.readLine());
-		StringTokenizer st;
-		int t = 1;
-		while (N != 0) {
-			arr = new int[N][N];
-			dist = new int[N][N];
-			
+    public static void main(String[] args)throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());
+        StringTokenizer st;
+        int t =1;
 
-			for (int i = 0; i < N; i++) {
-				st = new StringTokenizer(br.readLine());
-				for (int j = 0; j < N; j++) {
-					arr[i][j] = Integer.parseInt(st.nextToken());
-					dist[i][j] = 10*N*N;
-				}
-			}
+        while(N!=0){
+            arr = new int[N][N];
+            visited = new int[N][N];
 
-			di();
+            for(int i =0;i<N;i++){
+                st = new StringTokenizer(br.readLine());
+                for(int j =0;j<N;j++){
+                    arr[i][j] = Integer.parseInt(st.nextToken());
+                    visited[i][j] = Integer.MAX_VALUE;
+                }
+            }
+            bfs();
 
-			System.out.printf("Problem %d: %d\n", t, dist[N - 1][N - 1]);
-			
-			t++;
-			N = Integer.parseInt(br.readLine());
-		}
-	}
+            System.out.println("Problem "+t+": "+ visited[N-1][N-1]);
+            N = Integer.parseInt(br.readLine());
+            t++;
+        }
+    }
 }
