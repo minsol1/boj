@@ -1,17 +1,26 @@
-SELECT *
-FROM (
-    SELECT
-        CASE
-            WHEN SKILL_CODE & c.FRONT_END > 0 AND SKILL_CODE & c.PYTHON > 0 THEN 'A'
-            WHEN SKILL_CODE & c.CSHARP > 0 THEN 'B'
-            WHEN SKILL_CODE & c.FRONT_END > 0 THEN 'C'
-        END AS GRADE,
-        ID, EMAIL
-    FROM DEVELOPERS, ( SELECT
-        (SELECT SUM(CODE) FROM SKILLCODES WHERE CATEGORY = 'Front End') AS FRONT_END,
-        (SELECT SUM(CODE) FROM SKILLCODES WHERE NAME = 'Python') AS PYTHON,
-        (SELECT SUM(CODE) FROM SKILLCODES WHERE NAME = 'C#') AS CSHARP
-) c
-) t
-WHERE GRADE IS NOT NULL
-ORDER BY GRADE, ID;
+select GRADE, ID, EMAIL
+from (select ID, EMAIL,
+      case
+          when SKILL_CODE & (select sum(code) 
+                             from SKILLCODES
+                             group by CATEGORY
+                             having CATEGORY = "Front End") > 0
+                and SKILL_CODE & (select code 
+                             from SKILLCODES 
+                             where NAME = "Python") > 0
+            then 'A'
+            when SKILL_CODE & (select code 
+                             from SKILLCODES 
+                             where NAME = "C#") > 0
+            then 'B'
+            when SKILL_CODE & (select sum(code) 
+                             from SKILLCODES
+                             group by CATEGORY
+                             having CATEGORY = "Front End") > 0
+            then 'C'
+            else NULL
+      end
+      GRADE
+     from DEVELOPERS) g
+where GRADE is not null
+order by GRADE, ID
