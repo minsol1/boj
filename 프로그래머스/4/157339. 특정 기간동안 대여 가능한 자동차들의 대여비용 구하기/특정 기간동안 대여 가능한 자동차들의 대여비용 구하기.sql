@@ -7,7 +7,6 @@ on c.CAR_TYPE = p.CAR_TYPE
 where (c.CAR_TYPE = '세단' or c.CAR_TYPE = 'SUV' )
         and c.CAR_ID not in (select CAR_ID
                    from CAR_RENTAL_COMPANY_RENTAL_HISTORY h
-                   where end_date >= "2022-11-01"
-        AND start_date <= "2022-11-30")
+                   where  START_DATE <= '2022-11-30' and END_DATE >= '2022-11-01')
     and ((DAILY_FEE*30)*(100-p.DISCOUNT_RATE)*0.01) >=500000 and ((DAILY_FEE*30)*(100-p.DISCOUNT_RATE)*0.01)<2000000
 order by FEE desc, c.CAR_TYPE,c.CAR_ID desc
