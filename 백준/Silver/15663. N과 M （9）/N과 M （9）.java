@@ -1,55 +1,58 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-	
-	public static int N,M, size;
-	public static StringBuilder sb;
-	public static int[] arr = new int[10001];
-	
-	public static void dfs(int cnt, String temp) {
-		if(cnt==M) {
-			sb.append(temp).append("\n");
-			return;
-		}
-		
-		for(int i = 1; i<size+1;i++) {
-			if(arr[i]>0) {
-				arr[i]--;
-				dfs(cnt+1,temp+i+" ");
-				arr[i]++;
-			}
-		}
-	}
-	
+    public static int N,M;
+    public static int[] arr;
+    public static boolean[] visited;
+    public static StringBuilder sb;
+    public static HashSet hs;
 
-	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
+    public static void dfs(int cnt, int[] res){
+        if(cnt == M){
+            List<Integer> list = new ArrayList<>();
+            for(int n : res) list.add(n);
 
+            if(!hs.contains(list)){
+                hs.add(list);
+                for(int n : res){
+                    sb.append(n).append(" ");
+                }
+                sb.append("\n");
+            }
+            return;
+        }
 
-		N = Integer.parseInt(st.nextToken());
-		M = Integer.parseInt(st.nextToken());
-		size =0;
-		
-		sb= new StringBuilder();
-		st = new StringTokenizer(br.readLine());
-		
-		for(int i = 0;i<N;i++) {
-			int n = Integer.parseInt(st.nextToken());
-			arr[n]++;
-			if (n>size) {
-				size=n;
-			}
-		}
-		
-		dfs(0,"");
-		
-		System.out.println(sb);
+        for(int i =0; i<N ; i++){
+            if(visited[i]) continue;
+            visited[i] = true;
+            res[cnt] = arr[i];
+            dfs(cnt+1, res);
+            visited[i] = false;
+        }
+    }
 
-	}
+    public static void main(String[] args)throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        sb = new StringBuilder();
 
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        arr = new int[N];
+        visited = new boolean[N];
+        hs = new HashSet<>();
+
+        st = new StringTokenizer(br.readLine());
+        for(int i =0; i<N;i++){
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+
+        Arrays.sort(arr);
+
+        dfs(0,new int[M]);
+
+        System.out.println(sb);
+
+    }
 }
