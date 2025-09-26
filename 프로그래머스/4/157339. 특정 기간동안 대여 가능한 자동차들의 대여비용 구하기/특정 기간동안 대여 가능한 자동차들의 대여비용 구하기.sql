@@ -1,4 +1,4 @@
-select c.CAR_ID,p.CAR_TYPE, c.DAILY_FEE*30*0.01*(100-ifnull(substring_index(p.DISCOUNT_RATE,'%',1),0)) as FEE
+select c.CAR_ID,p.CAR_TYPE, c.DAILY_FEE*30*0.01*(100-ifnull(substring_index(p.DISCOUNT_RATE,"%",1),0)) as FEE
 from CAR_RENTAL_COMPANY_CAR c left join CAR_RENTAL_COMPANY_DISCOUNT_PLAN p
 on c.CAR_TYPE = p.CAR_TYPE
 where c.CAR_ID not in (select CAR_ID
