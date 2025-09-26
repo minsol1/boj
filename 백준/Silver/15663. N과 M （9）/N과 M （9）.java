@@ -6,7 +6,7 @@ public class Main {
     public static int[] arr;
     public static boolean[] visited;
     public static StringBuilder sb;
-    public static HashSet hs;
+    public static HashSet<List> hs;
 
     public static void dfs(int cnt, int[] res){
         if(cnt == M){
