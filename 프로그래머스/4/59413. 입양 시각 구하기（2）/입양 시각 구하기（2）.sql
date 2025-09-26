@@ -1,14 +1,14 @@
--- 코드를 입력하세요
-with recursive h 
-as (
-    select 0 as n
-    union all
-    select n+1
-    from h
-    where n<23
+with recursive a as(
+select 0 as h
+union all
+select h + 1 
+from a
+where h < 23
 )
 
-select h.n HOUR, COUNT(ao.DATETIME) COUNT
-from h left join ANIMAL_OUTS ao
-on h.n = hour(ao.DATETIME)
-group by h.n
+select a.h ,ifnull( count(ANIMAL_ID),0) COUNT
+from a left join ANIMAL_OUTS ao
+on a.h = hour(ao.DATETIME)
+group by a.h
+order by a.h 
+
