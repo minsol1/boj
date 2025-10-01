@@ -31,7 +31,7 @@ class Solution {
                 
             }
             else{
-                if(r >= N) break;
+                if(r>=N) break;
                 hm.put(gems[r], hm.getOrDefault(gems[r],0)+1);
                 r++;
             }
