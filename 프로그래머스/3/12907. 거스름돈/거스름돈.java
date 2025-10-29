@@ -1,0 +1,15 @@
+class Solution {
+    public int solution(int n, int[] money) {
+        int[] dp = new int[n+1];
+        int N = money.length;
+        dp[0] = 1;
+        for(int i =0; i<N;i++){
+            for(int j = money[i]; j<n+1 ; j++){
+                if(dp[j-money[i]] != 0){
+                    dp[j] += dp[j-money[i]] %1000000007;
+                }
+            }
+        }
+        return dp[n];
+    }
+}
