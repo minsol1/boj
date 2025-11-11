@@ -1,7 +1,4 @@
 import java.util.*;
-// n 명 , m ro 
-// 할인율 10, 20, 30 ,40 
-// 일정 비율이상 할인율 모두 구매 , 비용합이 가격 이상이면 플러스 가입 
 class Solution {
     public static int[] emot;
     public static int[][] user;
@@ -57,7 +54,6 @@ class Solution {
         user = users;
         cnt = 0; 
         money = 0; 
-        Arrays.sort(emot);
         
         dfs(0);
         answer[0] = cnt;
