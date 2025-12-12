@@ -6,27 +6,17 @@ class Solution {
         PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
         
         for(int i =0; i< enemy.length; i++){
-            if(n>= enemy[i]){
-                answer ++;
-                n-=enemy[i];
-                pq.add(enemy[i]);
-            }
-            else{
-                if(k>0){
-                    
-                    if(!pq.isEmpty()){
-                        if(pq.peek() > enemy[i]){
-                            n+=pq.poll();
-                            n-=enemy[i];
-                            pq.add(enemy[i]);
-                        }
-                    }
-                    answer++;
+            n-= enemy[i];
+            pq.add(enemy[i]);
+            
+            if(n < 0){
+                if(k > 0){
+                    n += pq.poll();
                     k--;
-                    
                 }
                 else break;
             }
+            answer++;
         }
         return answer;
     }
