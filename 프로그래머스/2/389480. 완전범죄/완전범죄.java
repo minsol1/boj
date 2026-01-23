@@ -1,3 +1,39 @@
+// import java.util.*;
+
+// class Solution {
+    
+//     public static int N, M;
+//     public static int[][] arr;
+//     public static int res;
+    
+//     public static void dfs(int A,int B,int idx){
+//         if(A >= N || B >= M) return;
+//         if(res <= A) return;
+        
+//         if(idx == arr.length) {
+//             res = res < A ? res : A;
+//             return;
+//         }
+        
+//         dfs(A, B + arr[idx][1] , idx + 1);
+//         dfs(A + arr[idx][0], B , idx + 1);
+//     }
+//     public int solution(int[][] info, int n, int m) {
+//         res = Integer.MAX_VALUE;
+//         arr = info;
+//         N = n;
+//         M = m;
+        
+//         Arrays.sort(arr, (a,b) -> b[1] - a[1]);
+        
+//         dfs(0,0,0);
+        
+//         if(res == Integer.MAX_VALUE) res = -1;
+//         return res;
+//     }
+// }
+
+
 import java.util.*;
 
 class Node implements Comparable<Node>{
