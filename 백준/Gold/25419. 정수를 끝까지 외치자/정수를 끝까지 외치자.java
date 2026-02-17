@@ -4,50 +4,46 @@ import java.util.*;
 
 public class Main {
 
-    public static int N , K;
-
     public static void main(String[] args)throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        K = Integer.parseInt(st.nextToken());
-
-        HashSet<Integer> hs = new HashSet<>();
-
-        int [] dp = new int[N+1];
-        Arrays.fill(dp, Integer.MAX_VALUE);
-
+        int N = Integer.parseInt(st.nextToken());
+        int K = Integer.parseInt(st.nextToken());
+        int[] dp = new int[N+1];
         st = new StringTokenizer(br.readLine());
 
         while(st.hasMoreTokens()){
-            hs.add(Integer.parseInt(st.nextToken()));
+            int n = Integer.parseInt(st.nextToken());
+            dp[n] = -1;
         }
 
-        for(int i = N; i > 0; i--){
-            if(hs.contains(i)) continue;
-            if(dp[i] == Integer.MAX_VALUE) dp[i] = 1;
-            for(int j = 1; j <=K; j++){
-                if(i - j > 0 && !hs.contains(i-j)){
-                    dp[i-j] = Math.min(dp[i-j], dp[i]+1);
-                }
+        int cnt = 0;
+        int lastIdx = N;
+        for(int i =0; i< N+1; i++){
+            if(dp[i]==-1) cnt++;
+            else cnt = 0;
+
+            if(cnt == K) {
+                lastIdx = i - K;
+                break;
             }
         }
-//        for(int i : dp){
-//            System.out.print(i+" ");
-//        }
-//        System.out.println("");
+
+        for(int i = lastIdx ; i>0 ; i--){
+            if(dp[i] == -1) continue;
+            int n = 1;
+            for(int j = 1; j< K+1; j++){
+                if(j+i > N) break;
+                if(dp[i+j] == 1) n = 0;
+            }
+            dp[i] = n;
+        }
 
         int res = 0;
-        int cnt = 0;
-        for(int i = 1; i<=K; i++){
-            if(dp[i] == Integer.MAX_VALUE) {
-                cnt++;
-                continue;
-            }
-            if(dp[i]%2 == 1) res = 1;
+        for(int i = 1; i <= K ; i++){
+            if (i > N) break;
+            if(dp[i]== 1) res = 1;
         }
-        if(cnt == K) res = 0;
-
         System.out.println(res);
     }
 }
