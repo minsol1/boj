@@ -1,57 +1,86 @@
+
 import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
-        char[][] arr = new char[N][N];
-        int x=-1;
-        int y =-1;
-        int[] res = new int[5];
 
-        for(int i =0;i<N;i++){
+    public static char[][]arr;
+    public static int x, y, hx,hy; // 심장, 허리끝 좌표
+    public static int N;
+
+    public static void la(){
+        int c = 0;
+        for(int i = y-1; i >=0; i--){
+            if(arr[x][i] == '*') c++;
+        }
+        System.out.print(c+" ");
+    }
+    public static void ra(){
+        int c = 0;
+        for(int i = y+1; i <N; i++){
+            if(arr[x][i] == '*') c++;
+        }
+        System.out.print(c+" ");
+
+    }
+    public static void h(){
+        int c = 0;
+        for(int i = x +1; i < N ; i++){
+            if(arr[i][y] == '*') {
+                c++;
+                hx = i;
+                hy = y;
+            }
+        }
+        System.out.print(c+" ");
+    }
+    public static void lr(){
+        int c = 0;
+        for(int i = x +1; i < N ; i++){
+            if(arr[i][hy-1] == '*') c++;
+        }
+        System.out.print(c+" ");
+    }
+    public static void rr(){
+        int c = 0;
+        for(int i = x + 1; i < N ; i++){
+            if(arr[i][hy + 1] == '*') c++;
+        }
+        System.out.print(c+" ");
+    }
+
+    public static void main(String[] args)throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());
+        arr = new char [N][N];
+
+        for(int i =0; i< N; i++){
             String str = br.readLine();
-            for(int j=0;j<N;j++){
+            for(int j =0; j< N; j++ ){
                 arr[i][j] = str.charAt(j);
             }
         }
 
-        // 심장 찾
-        for(int i =1;i<N-1;i++){
-            for(int j=1;j<N-1;j++){
-                if(arr[i-1][j]=='*' && arr[i+1][j]=='*' && arr[i][j-1]=='*' &&arr[i][j+1]=='*'){
-                    x = i;
+        for(int i =0; i< N; i++){
+            for(int j =0; j< N; j++ ){
+                if(arr[i][j] == '*'){
+                    x = i+1;
                     y = j;
+
+                    System.out.print(x+1 +" ");
+                    System.out.println(y+1);
+
+                    la();
+                    ra();
+                    h();
+                    lr();
+                    rr();
+                    return;
                 }
             }
         }
 
-        //왼 팔 길이
-        for(int i =0;i<y;i++){
-            if(arr[x][i]=='*') res[0]++;
-        }
-        //오른 팔 길이
-        for(int i =y+1;i<N;i++){
-            if(arr[x][i]=='*') res[1]++;
-        }
 
-        // 허리 길이
-        for(int i =x+1;i<N;i++){
-            if(arr[i][y]=='*') res[2]++;
-        }
-        // 왼 다리
-        for(int i =x+1;i<N;i++){
-            if(arr[i][y-1]=='*') res[3]++;
-        }
-        // 오른 다리
-        for(int i =x+1;i<N;i++){
-            if(arr[i][y+1]=='*') res[4]++;
-        }
-        x++;
-        y++;
-        System.out.println(x+" "+y);
-        System.out.println(res[0]+" "+res[1]+" "+res[2]+" "+res[3]+" "+res[4]);
 
     }
 }
