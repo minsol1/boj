@@ -1,38 +1,20 @@
+import java.io.*;
 import java.util.*;
-class Pos implements Comparable<Pos>{
-    int s;
-    int e;
-    
-    public Pos(int s, int e){
-        this.s = s;
-        this.e = e;
-    }
-    
-    public int compareTo(Pos o){
-        return e - o.e;
-    }
-}
 
 class Solution {
-    public static ArrayList<Pos> arr;
-    
     public int solution(int[][] targets) {
         int answer = 0;
-        arr= new ArrayList<>();
-        for(int i =0; i < targets.length; i++){
-            int s = targets[i][0];
-            int e = targets[i][1];
-            arr.add(new Pos(s,e));
-        }
-        Collections.sort(arr);
+        Arrays.sort(targets, (a,b) -> a[1] == b[1] ? a[0] - b[0] : a[1] - b[1]);
+        int e = 0;
         
-        int x = 0; 
-        for(Pos p : arr ){
-            if(p.s >= x){
-                x = p.e;
-                answer++;
+        for(int[] a : targets){
+            // System.out.println(a[0]+" "+ a[1]);
+            if(e <= a[0]){
+                answer ++;
+                e = a[1];
             }
         }
+        
         return answer;
     }
 }
