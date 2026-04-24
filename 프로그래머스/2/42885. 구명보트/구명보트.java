@@ -2,25 +2,32 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] people, int limit) {
+        int answer = 0;
         Arrays.sort(people);
-        int N = people.length;
-        int l = 0; 
-        int r = N-1;
-        int cnt = 0;
+        int l =0;
+        int r = people.length-1;
         
-        while(l < r){
-            if(people[l]+ people[r] <= limit){
-                cnt++;
+        while(l<=r){
+            // System.out.print(people[l] + " "+people[r] );
+            
+            if(people[l] + people[r] <= limit){
+                answer ++;
                 l++;
                 r--;
+                // System.out.println("ff" );
             }
             else{
+                answer++;
                 r--;
+                // System.out.println("dd");
             }
+            
+            if(l==r){
+                answer ++;
+                break;
+            }
+            
         }
-        
-        int answer = N - cnt;
-        
         return answer;
     }
 }
