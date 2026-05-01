@@ -1,74 +1,103 @@
 import java.util.*;
 
-class Work implements Comparable<Work>{
+class Task implements Comparable<Task>{
     String name;
     int start;
-    int time;
+    int remain;
     
-    public Work(String name, int start, int time){
+    public Task (String name, int start, int remain){
         this.name = name;
         this.start = start;
-        this.time = time;
+        this.remain = remain;
     }
     
-    public int compareTo(Work o){
+    public int compareTo(Task o){
         return this.start - o.start;
     }
 }
+
+
 class Solution {
-    public static int getTime(String str){
+    
+    public static int mint(String str){
         StringTokenizer st = new StringTokenizer(str, ":");
+        
         int h = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
-        return h*60+m;
-    }
-    public String[] solution(String[][] plans) {
-        int N = plans.length;
-        String[] res = new String[N];
-        int idx = 0;
-        PriorityQueue<Work> pq = new PriorityQueue<>();
-        Stack<Work> st = new Stack<>();
         
-        for(int i =0; i< N; i++){
-            String name = plans[i][0];
-            int start = getTime(plans[i][1]);
-            int time = Integer.parseInt(plans[i][2]);
+        return h*60 + m;
+        
+    }
+    
+    public String[] solution(String[][] plans) {
+        ArrayList<String> answer = new ArrayList<String>();
+        PriorityQueue<Task> pq = new PriorityQueue<>();
+        Stack<String> stack = new Stack<>();
+        HashMap<String, Integer> hm = new HashMap<>();
+        
+        
+        for(int i = 0; i< plans.length ; i++){            
+            pq.add(new Task(plans[i][0], mint(plans[i][1]), Integer.parseInt(plans[i][2]) ));
+        }
+        
+        int time = 0;
+        
+        while(!pq.isEmpty()){
+            Task now = pq.poll();
+            System.out.println(now.name);
+            System.out.println("1");
             
-            pq.add(new Work(name,start, time));
+            if(pq.isEmpty()){
+                answer.add(now.name);
+                System.out.println("2");
+                break;
+            }
+            
+            time = pq.peek().start - now.start;
+            
+            if(time >= now.remain){
+                answer.add(now.name);
+                time -=now.remain;
+                System.out.println(3);
+                
+                
+                if(stack.isEmpty()) continue;
+                while(time > 0 && !stack.isEmpty()){
+                    System.out.println(4);
+                    String nx = stack.peek();
+                    
+                    if(hm.get(nx) <= time){
+                        answer.add(nx);
+                        time -= hm.get(nx);
+                        stack.pop();
+                    }
+                    else{
+                        hm.put(nx, hm.get(nx) - time);
+                        time = 0;
+                    }
+                    
+                }
+                
+            }
+            else{
+                System.out.println(5);
+                stack.push(now.name);
+                hm.put(now.name, now.remain - time);
+                System.out.println("remain"+ now.name+" : "+( now.remain - time) );
+            }
+            
             
         }
         
-        int now = pq.peek().start;
-        int next = pq.peek().start;
+        while(!stack.isEmpty()){
+            System.out.println(6);
+            answer.add(stack.pop());
+        }
         
-        while(!pq.isEmpty() || !st.isEmpty()){
-            Work w = null;
-            if(now < next ){
-                if(!st.isEmpty()){
-                    w = st.pop();
-                }
-                else now = next;
-            }
-            else {
-                w= pq.poll();
-                
-                if(!pq.isEmpty()) next = pq.peek().start;
-                else next = Integer.MAX_VALUE;
-            }
-            if(w == null) continue;
-            
-            if(now+w.time > next){
-                w.time = now+w.time - next;
-                st.add(w);
-                now = next;
-            }
-            else{
-                res[idx++] = w.name;
-                now += w.time;
-            }
+        String[] res =new String[answer.size()];
+        for(int i =0; i< answer.size() ; i++){
+            res[i] = answer.get(i);
         }
         return res;
     }
 }
-
-
