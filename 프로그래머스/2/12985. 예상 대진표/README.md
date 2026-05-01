@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 80.2 MB, 시간: 0.03 ms
+메모리: 75.7 MB, 시간: 0.02 ms
 
 ### 구분
 
@@ -16,43 +16,43 @@
 
 ### 제출 일자
 
-2025년 12월 05일 10:47:08
+2026년 05월 01일 13:32:10
 
 ### 문제 설명
 
-<p>△△ 게임대회가 개최되었습니다. 이 대회는 N명이 참가하고, 토너먼트 형식으로 진행됩니다. N명의 참가자는 각각 1부터 N번을 차례대로 배정받습니다. 그리고, 1번↔2번, 3번↔4번, ... , N-1번↔N번의 참가자끼리 게임을 진행합니다. 각 게임에서 이긴 사람은 다음 라운드에 진출할 수 있습니다. 이때, 다음 라운드에 진출할 참가자의 번호는 다시 1번부터 N/2번을 차례대로 배정받습니다. 만약 1번↔2번 끼리 겨루는 게임에서 2번이 승리했다면 다음 라운드에서 1번을 부여받고, 3번↔4번에서 겨루는 게임에서 3번이 승리했다면 다음 라운드에서 2번을 부여받게 됩니다. 게임은 최종 한 명이 남을 때까지 진행됩니다.</p>
+<p style="user-select: auto !important;">△△ 게임대회가 개최되었습니다. 이 대회는 N명이 참가하고, 토너먼트 형식으로 진행됩니다. N명의 참가자는 각각 1부터 N번을 차례대로 배정받습니다. 그리고, 1번↔2번, 3번↔4번, ... , N-1번↔N번의 참가자끼리 게임을 진행합니다. 각 게임에서 이긴 사람은 다음 라운드에 진출할 수 있습니다. 이때, 다음 라운드에 진출할 참가자의 번호는 다시 1번부터 N/2번을 차례대로 배정받습니다. 만약 1번↔2번 끼리 겨루는 게임에서 2번이 승리했다면 다음 라운드에서 1번을 부여받고, 3번↔4번에서 겨루는 게임에서 3번이 승리했다면 다음 라운드에서 2번을 부여받게 됩니다. 게임은 최종 한 명이 남을 때까지 진행됩니다.</p>
 
-<p>이때, 처음 라운드에서 A번을 가진 참가자는 경쟁자로 생각하는 B번 참가자와 몇 번째 라운드에서 만나는지 궁금해졌습니다. 게임 참가자 수 N, 참가자 번호 A, 경쟁자 번호 B가 함수 solution의 매개변수로 주어질 때, 처음 라운드에서 A번을 가진 참가자는 경쟁자로 생각하는 B번 참가자와 몇 번째 라운드에서 만나는지 return 하는 solution 함수를 완성해 주세요. <strong>단, A번 참가자와 B번 참가자는 서로 붙게 되기 전까지 항상 이긴다고 가정합니다.</strong></p>
+<p style="user-select: auto !important;">이때, 처음 라운드에서 A번을 가진 참가자는 경쟁자로 생각하는 B번 참가자와 몇 번째 라운드에서 만나는지 궁금해졌습니다. 게임 참가자 수 N, 참가자 번호 A, 경쟁자 번호 B가 함수 solution의 매개변수로 주어질 때, 처음 라운드에서 A번을 가진 참가자는 경쟁자로 생각하는 B번 참가자와 몇 번째 라운드에서 만나는지 return 하는 solution 함수를 완성해 주세요. <strong style="user-select: auto !important;">단, A번 참가자와 B번 참가자는 서로 붙게 되기 전까지 항상 이긴다고 가정합니다.</strong></p>
 
-<h5>제한사항</h5>
+<h5 style="user-select: auto !important;">제한사항</h5>
 
-<ul>
-<li>N : 2<sup>1</sup> 이상 2<sup>20</sup> 이하인 자연수 (2의 지수 승으로 주어지므로 부전승은 발생하지 않습니다.)</li>
-<li>A, B : N 이하인 자연수 (단, A ≠ B 입니다.)</li>
+<ul style="user-select: auto !important;">
+<li style="user-select: auto !important;">N : 2<sup style="user-select: auto !important;">1</sup> 이상 2<sup style="user-select: auto !important;">20</sup> 이하인 자연수 (2의 지수 승으로 주어지므로 부전승은 발생하지 않습니다.)</li>
+<li style="user-select: auto !important;">A, B : N 이하인 자연수 (단, A ≠ B 입니다.)</li>
 </ul>
 
-<hr>
+<hr style="user-select: auto !important;">
 
-<h5>입출력 예</h5>
-<table class="table">
-        <thead><tr>
-<th>N</th>
-<th>A</th>
-<th>B</th>
-<th>answer</th>
+<h5 style="user-select: auto !important;">입출력 예</h5>
+<table class="table" style="user-select: auto !important;">
+        <thead style="user-select: auto !important;"><tr style="user-select: auto !important;">
+<th style="user-select: auto !important;">N</th>
+<th style="user-select: auto !important;">A</th>
+<th style="user-select: auto !important;">B</th>
+<th style="user-select: auto !important;">answer</th>
 </tr>
 </thead>
-        <tbody><tr>
-<td>8</td>
-<td>4</td>
-<td>7</td>
-<td>3</td>
+        <tbody style="user-select: auto !important;"><tr style="user-select: auto !important;">
+<td style="user-select: auto !important;">8</td>
+<td style="user-select: auto !important;">4</td>
+<td style="user-select: auto !important;">7</td>
+<td style="user-select: auto !important;">3</td>
 </tr>
 </tbody>
       </table>
-<h5>입출력 예 설명</h5>
+<h5 style="user-select: auto !important;">입출력 예 설명</h5>
 
-<p>입출력 예 #1<br>
+<p style="user-select: auto !important;">입출력 예 #1<br style="user-select: auto !important;">
 첫 번째 라운드에서 4번 참가자는 3번 참가자와 붙게 되고, 7번 참가자는 8번 참가자와 붙게 됩니다. 항상 이긴다고 가정했으므로 4번 참가자는 다음 라운드에서 2번이 되고, 7번 참가자는 4번이 됩니다. 두 번째 라운드에서 2번은 1번과 붙게 되고, 4번은 3번과 붙게 됩니다. 항상 이긴다고 가정했으므로 2번은 다음 라운드에서 1번이 되고, 4번은 2번이 됩니다. 세 번째 라운드에서 1번과 2번으로 두 참가자가 붙게 되므로 3을 return 하면 됩니다.</p>
 
 
