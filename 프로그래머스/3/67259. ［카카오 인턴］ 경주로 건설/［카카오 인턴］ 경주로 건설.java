@@ -1,72 +1,88 @@
 import java.util.*;
+import java.io.*;
 
-class Node{
+class Node implements Comparable<Node>{
     int x;
     int y;
+    int c;
     int d;
     
-    public Node(int x, int y, int d){
+    public Node (int x, int y, int c , int d){
         this.x = x;
         this.y = y;
+        this.c = c;
         this.d = d;
+    }
+    
+    public int compareTo(Node o){
+        return this.c - o.c;
     }
 }
 
 class Solution {
     
-    public static int N;
     public static int[][] arr;
-    public static int[][][] visited;
+    public static int N;
     public static int[] dx = {0,1,0,-1};
     public static int[] dy = {1,0,-1,0};
+    public static int[][][] visited;
     
     public static void bfs(){
-        Queue<Node> q = new ArrayDeque<>();
-        q.add(new Node(0,0,0));
-        q.add(new Node(0,0,1));
+        Queue<int[]> q = new ArrayDeque<>();
+        q.add(new int[]{0,0,0,0});
+        q.add(new int[]{0,0,0,1});
+        q.add(new int[]{0,0,0,2});
+        q.add(new int[]{0,0,0,3});
         visited[0][0][0] = 0;
         visited[0][0][1] = 0;
+        visited[0][0][2] = 0;
+        visited[0][0][3] = 0;
         
         while(!q.isEmpty()){
-            Node now = q.poll();
+            int[] now = q.poll();
             
-            for(int d = 0; d<4 ;d++){
-                int nx = now.x + dx[d];
-                int ny = now.y + dy[d];
+            for(int d = 0; d<4; d++){
+                int nx = now[0]+ dx[d];
+                int ny = now[1]+ dy[d];
+                int nc = now[2];
                 
-                if(nx <0 || nx >=N || ny <0 || ny >=N || arr[nx][ny]==1) continue;
-                
-                int cost = visited[now.x][now.y][now.d] + 100;
-                
-                if(d%2 != now.d%2 ){
-                    cost+=500;
+                if(now[3] %2 == d %2){
+                    nc +=100;
+                }
+                else{
+                    nc +=600;
                 }
                 
-                if(visited[nx][ny][d] > cost){
-                    visited[nx][ny][d] = cost;
-                    q.add(new Node(nx,ny,d));
-                }
+                if(nx < 0 || nx >=N || ny < 0 || ny >=N || visited[nx][ny][d] < nc || arr[nx][ny] ==1)
+                    continue;
+                
+                q.add(new int[] {nx,ny, nc, d});
+                visited[nx][ny][d] = nc;
+                
             }
         }
+        
     }
     
     public int solution(int[][] board) {
-        arr = board;
         N = board.length;
-        visited= new int[N][N][4];
-        
-        for(int i = 0; i<N ; i++){
-            for(int j = 0; j<N;j++){
+        arr = board;
+        visited = new int[N][N][4];
+        for(int i =0; i<N; i++){
+            for(int j = 0; j < N; j++){
                 Arrays.fill(visited[i][j], Integer.MAX_VALUE);
             }
         }
         
         bfs();
-        int res = Integer.MAX_VALUE;
-        for(int i =0; i<4; i++){
-            res = Math.min(res, visited[N-1][N-1][i]);
-        }
-        return res;  
-        
+        // for(int i =0; i<N; i++){
+        //     for(int j =0; j< N ; j++){
+        //         System.out.print(visited[i][j]+" ");
+        //     }
+        //     System.out.println("");
+        // }
+        Arrays.sort(visited[N-1][N-1]);
+        int answer = visited[N-1][N-1][0];
+        return answer;
     }
 }
