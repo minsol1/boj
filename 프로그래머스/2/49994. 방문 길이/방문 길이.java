@@ -1,49 +1,56 @@
+import java.util.*;
+import java.io.*;
+
 class Solution {
     public int solution(String dirs) {
-        int answer = 0;
-        int N = 13; 
-        boolean[][][] visited = new boolean[N][N][4];
-        int x = 6;
-        int y = 6;
         
-        for(int i =0 ; i < dirs.length(); i++){
+        int x = 5; 
+        int y = 5; 
+        boolean[][][] visited =new boolean[11][11][4];
+        int res = 0;
+        
+        for(int i =0; i < dirs.length(); i++){
             char c = dirs.charAt(i);
+            int d = 0;
+            int nd = 0;
             int nx = x;
             int ny = y;
-            int d = -1; 
             
-            if(c == 'U') 
-            {
-                nx = x-1;
+            if(c == 'U'){
+                x++;
                 d = 0;
+                nd = 2;
             }
-            if(c == 'D') 
-            {
-                nx= x +1;
+            if(c == 'R'){
+                y++;
                 d = 1;
+                nd = 3;
             }
-            if(c == 'R') 
-            {
-                ny= y +1;
-                d = 2;    
+            if(c == 'D'){ 
+                x--;
+                d = 2;
+                nd= 0;
             }
-            if(c == 'L') 
-            {
-                ny = y -1;
+            if(c == 'L'){
+                y--;
                 d = 3;
+                nd = 1;
             }
             
-            if(nx <1 || nx > 11 || ny < 1 || ny > 11) continue;
+            if(x < 0) x = 0;
+            if(x > 10) x = 10;
+            if(y < 0) y = 0;
+            if(y > 10) y = 10;
+            
+            if(nx == x && ny == y) continue;
             
             if(!visited[x][y][d]){
+                res++;
                 visited[x][y][d] = true;
-                d = d % 2 == 0 ? d+1 : d-1;
-                visited[nx][ny][d] = true;
-                answer ++;
+                visited[nx][ny][nd] = true;
             }
-            x = nx;
-            y = ny;
         }
-        return answer;
+        
+        return res;
     }
 }
