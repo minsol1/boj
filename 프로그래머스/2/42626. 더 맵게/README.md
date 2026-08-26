@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 124 MB, 시간: 1678.70 ms
+메모리: 139 MB, 시간: 666.21 ms
 
 ### 구분
 
@@ -16,56 +16,56 @@
 
 ### 제출 일자
 
-2026년 01월 15일 13:53:25
+2026년 08월 26일 20:26:26
 
 ### 문제 설명
 
-<p>매운 것을 좋아하는 Leo는 모든 음식의 스코빌 지수를 K 이상으로 만들고 싶습니다. 모든 음식의 스코빌 지수를 K 이상으로 만들기 위해 Leo는 스코빌 지수가 가장 낮은 두 개의 음식을 아래와 같이 특별한 방법으로 섞어 새로운 음식을 만듭니다.</p>
-<div class="highlight"><pre class="codehilite"><code>섞은 음식의 스코빌 지수 = 가장 맵지 않은 음식의 스코빌 지수 + (두 번째로 맵지 않은 음식의 스코빌 지수 * 2)
+<p style="user-select: auto !important;">매운 것을 좋아하는 Leo는 모든 음식의 스코빌 지수를 K 이상으로 만들고 싶습니다. 모든 음식의 스코빌 지수를 K 이상으로 만들기 위해 Leo는 스코빌 지수가 가장 낮은 두 개의 음식을 아래와 같이 특별한 방법으로 섞어 새로운 음식을 만듭니다.</p>
+<div class="highlight" style="user-select: auto !important;"><pre class="codehilite" style="user-select: auto !important;"><code style="user-select: auto !important;">섞은 음식의 스코빌 지수 = 가장 맵지 않은 음식의 스코빌 지수 + (두 번째로 맵지 않은 음식의 스코빌 지수 * 2)
 </code></pre></div>
-<p>Leo는 모든 음식의 스코빌 지수가 K 이상이 될 때까지 반복하여 섞습니다.<br>
+<p style="user-select: auto !important;">Leo는 모든 음식의 스코빌 지수가 K 이상이 될 때까지 반복하여 섞습니다.<br style="user-select: auto !important;">
 Leo가 가진 음식의 스코빌 지수를 담은 배열 scoville과 원하는 스코빌 지수 K가 주어질 때, 모든 음식의 스코빌 지수를 K 이상으로 만들기 위해 섞어야 하는 최소 횟수를 return 하도록 solution 함수를 작성해주세요.</p>
 
-<h5>제한 사항</h5>
+<h5 style="user-select: auto !important;">제한 사항</h5>
 
-<ul>
-<li>scoville의 길이는 2 이상 1,000,000 이하입니다.</li>
-<li>K는 0 이상 1,000,000,000 이하입니다.</li>
-<li>scoville의 원소는 각각 0 이상 1,000,000 이하입니다.</li>
-<li>모든 음식의 스코빌 지수를 K 이상으로 만들 수 없는 경우에는 -1을 return 합니다.</li>
+<ul style="user-select: auto !important;">
+<li style="user-select: auto !important;">scoville의 길이는 2 이상 1,000,000 이하입니다.</li>
+<li style="user-select: auto !important;">K는 0 이상 1,000,000,000 이하입니다.</li>
+<li style="user-select: auto !important;">scoville의 원소는 각각 0 이상 1,000,000 이하입니다.</li>
+<li style="user-select: auto !important;">모든 음식의 스코빌 지수를 K 이상으로 만들 수 없는 경우에는 -1을 return 합니다.</li>
 </ul>
 
-<h5>입출력 예</h5>
-<table class="table">
-        <thead><tr>
-<th>scoville</th>
-<th>K</th>
-<th>return</th>
+<h5 style="user-select: auto !important;">입출력 예</h5>
+<table class="table" style="user-select: auto !important;">
+        <thead style="user-select: auto !important;"><tr style="user-select: auto !important;">
+<th style="user-select: auto !important;">scoville</th>
+<th style="user-select: auto !important;">K</th>
+<th style="user-select: auto !important;">return</th>
 </tr>
 </thead>
-        <tbody><tr>
-<td>[1, 2, 3, 9, 10, 12]</td>
-<td>7</td>
-<td>2</td>
+        <tbody style="user-select: auto !important;"><tr style="user-select: auto !important;">
+<td style="user-select: auto !important;">[1, 2, 3, 9, 10, 12]</td>
+<td style="user-select: auto !important;">7</td>
+<td style="user-select: auto !important;">2</td>
 </tr>
 </tbody>
       </table>
-<h5>입출력 예 설명</h5>
+<h5 style="user-select: auto !important;">입출력 예 설명</h5>
 
-<ol>
-<li><p>스코빌 지수가 1인 음식과 2인 음식을 섞으면 음식의 스코빌 지수가 아래와 같이 됩니다.<br>
-새로운 음식의 스코빌 지수 = 1 + (2 * 2) = 5<br>
+<ol style="user-select: auto !important;">
+<li style="user-select: auto !important;"><p style="user-select: auto !important;">스코빌 지수가 1인 음식과 2인 음식을 섞으면 음식의 스코빌 지수가 아래와 같이 됩니다.<br style="user-select: auto !important;">
+새로운 음식의 스코빌 지수 = 1 + (2 * 2) = 5<br style="user-select: auto !important;">
 가진 음식의 스코빌 지수 = [5, 3, 9, 10, 12]</p></li>
-<li><p>스코빌 지수가 3인 음식과 5인 음식을 섞으면 음식의 스코빌 지수가 아래와 같이 됩니다.<br>
-새로운 음식의 스코빌 지수 = 3 + (5 * 2) = 13<br>
+<li style="user-select: auto !important;"><p style="user-select: auto !important;">스코빌 지수가 3인 음식과 5인 음식을 섞으면 음식의 스코빌 지수가 아래와 같이 됩니다.<br style="user-select: auto !important;">
+새로운 음식의 스코빌 지수 = 3 + (5 * 2) = 13<br style="user-select: auto !important;">
 가진 음식의 스코빌 지수 = [13, 9, 10, 12]</p></li>
 </ol>
 
-<p>모든 음식의 스코빌 지수가 7 이상이 되었고 이때 섞은 횟수는 2회입니다.</p>
+<p style="user-select: auto !important;">모든 음식의 스코빌 지수가 7 이상이 되었고 이때 섞은 횟수는 2회입니다.</p>
 
-<hr>
+<hr style="user-select: auto !important;">
 
-<p>※ 공지 - 2022년 12월 23일 테스트 케이스가 추가되었습니다. 기존에 제출한 코드가 통과하지 못할 수도 있습니다.<br>
+<p style="user-select: auto !important;">※ 공지 - 2022년 12월 23일 테스트 케이스가 추가되었습니다. 기존에 제출한 코드가 통과하지 못할 수도 있습니다.<br style="user-select: auto !important;">
 ※ 공지 - 2023년 03월 23일 테스트 케이스가 추가되었습니다. 기존에 제출한 코드가 통과하지 못할 수도 있습니다.</p>
 
 
