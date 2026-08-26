@@ -1,54 +1,75 @@
 import java.util.*;
+import java.io.*;
 
-class Solution {
-    class Node implements Comparable<Node>{
-        int num;
-        String g;
-        int p;
-        int h;
-        
-        public Node(int num, String g, int p){
-            this.num = num;
-            this.g = g;
-            this.p = p;
-        }
-        
-        public int compareTo(Node o){
-            if(h== o.h){
-                if(o.p == p) return num - o.num;
-                return o.p - p;
-            }
-            return o.h - h;
-        }
+class Genre implements Comparable<Genre>{
+    String str;
+    ArrayList<Song> songs;
+    int cnt;
+    
+    public Genre (String str, ArrayList<Song> songs, int cnt){
+        this.str= str;
+        this.songs = songs;
+        this.cnt = cnt;
     }
+    
+    public int compareTo(Genre o ){
+        return o.cnt - cnt;
+    }
+}
+
+class Song implements Comparable<Song>{
+    int idx;
+    int cnt;
+    
+    public Song (int idx , int cnt){
+        this.idx = idx;
+        this.cnt = cnt;
+    }
+    
+    public int compareTo(Song o){
+        return o.cnt - cnt;
+    }
+}
+class Solution {
     public int[] solution(String[] genres, int[] plays) {
-        int N = genres.length;
-        Node[] arr = new Node[N];
-        ArrayList<Integer> answer = new ArrayList<>();
-        HashMap<String, Integer> hm = new HashMap<>();
-        HashMap<String, Integer> hm2 = new HashMap<>();
+        HashMap<String, Genre> hm = new HashMap<>();
+        ArrayList<Genre> arr = new ArrayList<>();
         
-        for(int i =0; i < N;i++){
-            arr[i] = new Node(i,genres[i],plays[i]);
-            hm.put(genres[i], hm.getOrDefault(genres[i],0)+plays[i]);
-        }
-        for(int i =0; i < N;i++){
-            arr[i].h = hm.get(arr[i].g);
-        }
-        
-        Arrays.sort(arr);
-        
-        for(int i = 0; i < N ; i ++){
-            if(hm2.getOrDefault(arr[i].g ,0) <2){
-                answer.add(arr[i].num);
-                hm2.put(arr[i].g , hm2.getOrDefault(arr[i].g,0)+1);
+        for(int i =0; i< genres.length; i++){
+            String str = genres[i];
+            int cnt = plays[i];
+            Song song = new Song(i, plays[i]);
+            
+            if(hm.containsKey(str)){
+                Genre g = hm.get(str);
+                g.songs.add(song);
+                g.cnt+= cnt;
             }
+            else{
+                ArrayList<Song> songs = new ArrayList<>();
+                songs.add(song);
+                Genre g = new Genre(str, songs, cnt );
+                arr.add(g);
+                hm.put(str,g);
+            }
+        }
+        // System.out.println(hm.size()+" "+ arr.size());
+        
+        Collections.sort(arr);
+        ArrayList<Integer> answer = new ArrayList<>();
+        for(int i =0; i< arr.size();i++){
+            Genre genre = arr.get(i);
+            Collections.sort(genre.songs);
+            
+            answer.add(genre.songs.get(0).idx);
+            if(genre.songs.size() >1) answer.add(genre.songs.get(1).idx);
             
         }
         int[] res = new int[answer.size()];
-        for(int i =0; i<answer.size();i++){
+        for(int i =0; i< answer.size(); i++){
             res[i] = answer.get(i);
         }
+        
         return res;
     }
 }
