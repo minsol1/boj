@@ -1,11 +1,25 @@
--- 코드를 입력하세요
-SELECT distinct y.CART_ID
-from (select ID	, CART_ID, NAME, PRICE
-     from CART_PRODUCTS
-     where NAME = "Yogurt") as y
-     join 
-     (select ID	, CART_ID, NAME, PRICE
-     from CART_PRODUCTS
-     where NAME = "Milk") as m
-     on y.CART_ID = m.CART_ID 
-order by y.CART_ID
+# -- 코드를 입력하세요
+# SELECT CART_ID,count(CART_ID)
+# from ( select CART_ID
+#         from CART_PRODUCTS
+#         where NAME = 'Yogurt' or NAME = 'Milk'
+#      ) c
+# group by CART_ID
+# having count(CART_ID) >=2
+# order by CART_ID
+
+
+select CART_ID
+from (select distinct CART_ID
+from CART_PRODUCTS
+where NAME = 'Yogurt'
+
+union all
+
+select distinct CART_ID
+from CART_PRODUCTS
+where NAME = 'Milk')c
+group by CART_ID
+having count(CART_ID) >=2
+
+
