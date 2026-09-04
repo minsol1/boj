@@ -6,7 +6,6 @@ class Solution {
     public static boolean[] visited;
     public static String[] res;
     
-    
     public static void dfs(String s, ArrayList<String> path){
         if(res != null) return;
         
@@ -25,7 +24,6 @@ class Solution {
             visited[i] = false;
             path.remove(path.size()-1);
         }
- 
     }
     
     public String[] solution(String[][] tickets) {
