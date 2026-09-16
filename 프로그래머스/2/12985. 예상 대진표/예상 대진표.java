@@ -2,17 +2,19 @@ class Solution
 {
     public int solution(int n, int a, int b)
     {
-        int cnt = 0;
-        
-        while(a !=b){
-            a = (a+1)/2;
-            b = (b+1)/2;
-            cnt++;
+        int answer = 0;
+
+        while(a != b){
+            answer++;
+            
+            if(a % 2 == 1) a++;
+            if(b % 2 == 1) b++;
+            
+            a /=2;
+            b/=2;
+            
         }
-        
-        return cnt;
-        
-        
-        
+
+        return answer;
     }
 }
