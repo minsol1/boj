@@ -1,32 +1,44 @@
+import java.io.*;
 import java.util.*;
 
+class Node implements Comparable<Node>{
+    String str;
+    
+    public Node(String str){
+        this.str = str;
+    }
+    
+    public int compareTo(Node o){
+        return str.length() - o.str.length();
+    }
+}
 class Solution {
     public int[] solution(String s) {
         
-        s = s.replaceAll("\\{\\{","").replaceAll("\\}\\}","")
-            .replaceAll("\\},\\{","-");
+        s = s.substring(2,s.length()-2);
+        String[] s_split = s.split("\\}\\,\\{");
+        ArrayList<Node> arr = new ArrayList<>();
         
-        ArrayList<String[]>arr = new ArrayList<>();
-        String[] set  = s.split("-");
-        
-        for(String str : set){
-            arr.add(str.split(","));
+        for(int i =0; i< s_split.length ; i++){
+            arr.add(new Node(s_split[i]));
         }
-        Collections.sort(arr, (o1,o2) -> o1.length - o2.length);
+        Collections.sort(arr);
+        System.out.println(arr.get(0).str);
         
-        int[] res = new int[arr.size()];
-        int idx = 0; 
-        HashSet<Integer> hs = new HashSet<>();
-        for(String[] a : arr){
-            for(String num : a){
-                int n = Integer.parseInt(num);
-                if(!hs.contains(n)){
-                    res[idx++] = n;
-                    hs.add(n);
+        Set<String> set = new HashSet<>();
+        int[] answer = new int[arr.size()];
+        for(int i =0; i< arr.size(); i++){
+            String[] str = arr.get(i).str.split(",");
+            
+            for(String c : str){
+                if(!set.contains(c)){
+                    set.add(c);
+                    answer[i]=  Integer.parseInt(c);
+                    break;
                 }
             }
+            
         }
-        
-        return res;
+        return answer;
     }
 }
