@@ -23,12 +23,10 @@ class Solution {
                 q.add(nx);
                 if(visited[nx] == max_dep){
                     cnt++;
-                    System.out.println(nx);
                 } 
                 else if(visited[nx] > max_dep ){
                     max_dep = visited[nx];
                     cnt = 1;
-                    System.out.println(nx+" 갱신");
                 }
             }
         }
