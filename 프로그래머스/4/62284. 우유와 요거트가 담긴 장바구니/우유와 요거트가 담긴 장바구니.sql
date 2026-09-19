@@ -21,5 +21,3 @@ from CART_PRODUCTS
 where NAME = 'Milk')c
 group by CART_ID
 having count(CART_ID) >=2
-
-
