@@ -1,13 +1,14 @@
 class Solution {
     public int[] solution(int n, long left, long right) {
-        int N = (int)(right - left) + 1;
-        int[] answer = new int[N];
-        int idx = 0;
-        for(long i = left; i< right+1;i++){
-            int x = (int)(i / n);
-            int y = (int)(i % n);
-            answer[idx++] = Math.max(x,y)+1;
+        long len = right - left + 1;
+        int[] answer = new int[(int) len];
+        
+        for(int i =0; i< len; i++){
+            long c = (left + i)/n;
+            long r = (left + i)%n;
             
+            long num = Math.max(c,r)+1;
+            answer[i] = (int)num;
         }
         return answer;
     }
