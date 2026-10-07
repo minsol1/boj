@@ -1,49 +1,45 @@
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
-public class Solution {
-	public static int max=0;
-	public static int N;
-	public static int L;
-
+class Solution
+{
+    
+    public static int N, L, res;
+    public static int[][] arr;
+    
+    public static void dfs(int n , int sum, int cal){
+        if(cal > L) return;
+        if(sum > res) res = sum;
+        if(n == N) return;
+        
+        dfs(n+1,sum+ arr[n][0] ,cal + arr[n][1]);
+        dfs(n+1,sum,cal);
+        
+    }
+    
 	public static void main(String args[]) throws Exception
 	{
-		//System.setIn(new FileInputStream("src/input.txt"));
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int T;
-		T=Integer.parseInt(br.readLine());
-
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine());
+        
 		for(int test_case = 1; test_case <= T; test_case++)
 		{
-			StringTokenizer st = new StringTokenizer(br.readLine()," ");
-			N = Integer.parseInt(st.nextToken());
-			L = Integer.parseInt(st.nextToken());
-			max=0;
-			int[][] m = new int[N][2];
-			
-			for(int i =0;i<N;i++) {
-				st = new StringTokenizer(br.readLine()," ");
-				m[i][0] = Integer.parseInt(st.nextToken());
-				m[i][1] = Integer.parseInt(st.nextToken());
-			}
-			cho(m,0,0,0);
-			
-			System.out.println("#"+test_case+" "+max);
-			
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            N = Integer.parseInt(st.nextToken());
+            L = Integer.parseInt(st.nextToken());
+            res = 0;
+            
+            arr= new int[N][2];
+            
+            for(int i =0; i< N; i++){
+                st = new StringTokenizer(br.readLine());
+                arr[i][0] = Integer.parseInt(st.nextToken());
+                arr[i][1] = Integer.parseInt(st.nextToken());
+            }
+            
+            dfs(0,0,0);
+            System.out.println("#"+test_case+" "+res);
+            
 		}
-	}
-	
-	public static void cho(int[][] m , int l,int t_sum,int c_sum) {
-		if(c_sum > L ) return;
-		if(l==N) {
-			max = Math.max(max, t_sum);
-			return;
-		}
-		
-		cho(m,l+1,t_sum+m[l][0],c_sum+m[l][1]);
-		cho(m,l+1,t_sum,c_sum);
 	}
 }
