@@ -13,8 +13,8 @@ class Solution {
 
             for(int i =0; i<N; i++){
                 for(int j =0; j< N;j++){
-                    int c = i - x;
-                    int r = j - y;
+                    int c = i + x;
+                    int r = j + y;
                     if (c < 0 || c >= M || r < 0 || r >= M) {
                         if (l[i][j] == 0) return false;
                         continue;
@@ -44,8 +44,8 @@ class Solution {
         k = key;
         l = lock;
 
-        for(int x = -M ; x <N; x++){
-            for(int y = -M ; y <N; y++){
+        for(int x = -N+1 ; x <M; x++){
+            for(int y = -N+1 ; y <M; y++){
                 for(int i =0; i<4; i++){
                     k = rotation();
                     if(check(x,y)){
